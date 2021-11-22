@@ -1,0 +1,80 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="Content\Source\conioex2.cpp" />
+    <ClCompile Include="Content\Source\Enemy.cpp" />
+    <ClCompile Include="Content\Source\Game.cpp" />
+    <ClCompile Include="Content\Source\GameBase.cpp" />
+    <ClCompile Include="Content\Source\main.cpp" />
+    <ClCompile Include="Content\Source\Player.cpp" />
+    <ClCompile Include="Content\Source\Projectile.cpp" />
+    <ClCompile Include="Content\Source\Audio.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Content\Source\conioex2.h" />
+    <ClInclude Include="Content\Source\Enemy.h" />
+    <ClInclude Include="Content\Source\Game.h" />
+    <ClInclude Include="Content\Source\GameBase.h" />
+    <ClInclude Include="Content\Source\Player.h" />
+    <ClInclude Include="Content\Source\Projectile.h" />
+    <ClInclude Include="Content\Source\Audio.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="Content\Asset\enemy.bmp" />
+    <Image Include="Content\Asset\hp_1.bmp" />
+    <Image Include="Content\Asset\hp_2.bmp" />
+    <Image Include="Content\Asset\hp_3.bmp" />
+    <Image Include="Content\Asset\idle.bmp" />
+    <Image Include="Content\Asset\MonoChrono.bmp" />
+    <Image Include="Content\Asset\player.bmp" />
+    <Image Include="Content\Asset\press.bmp" />
+    <Image Include="Content\Asset\walk_01.bmp" />
+    <Image Include="Content\Asset\walk_02.bmp" />
+    <Image Include="Content\Asset\walk_03.bmp" />
+    <Image Include="Content\Asset\walk_04.bmp" />
+    <Image Include="Content\Asset\l_idle.bmp" />
+    <Image Include="Content\Asset\l_walk_01.bmp" />
+    <Image Include="Content\Asset\l_walk_02.bmp" />
+    <Image Include="Content\Asset\l_walk_03.bmp" />
+    <Image Include="Content\Asset\l_walk_04.bmp" />
+    <Image Include="Content\Asset\nier.bmp" />
+    <Image Include="Content\Asset\r_idle.bmp" />
+    <Image Include="Content\Asset\r_walk_01.bmp" />
+    <Image Include="Content\Asset\r_walk_02.bmp" />
+    <Image Include="Content\Asset\r_walk_03.bmp" />
+    <Image Include="Content\Asset\r_walk_04.bmp" />
+    <Image Include="Content\Asset\attack_trail.bmp" />
+    <Image Include="Content\Asset\hp_0.bmp" />
+    <Image Include="Content\Asset\idle_01.bmp" />
+    <Image Include="Content\Asset\idle_02.bmp" />
+    <Image Include="Content\Asset\walk_05.bmp" />
+    <Image Include="Content\Asset\walk_06.bmp" />
+    <Image Include="Content\Asset\walk_07.bmp" />
+    <Image Include="Content\Asset\walk_08.bmp" />
+    <Image Include="Content\Asset\walk_09.bmp" />
+    <Image Include="Content\Asset\walk_10.bmp" />
+    <Image Include="Content\Asset\walk_11.bmp" />
+    <Image Include="Content\Asset\walk_12.bmp" />
+    <Image Include="Content\Asset\walk_13.bmp" />
+    <Image Include="Content\Asset\walk_14.bmp" />
+    <Image Include="Content\Asset\dash_01.bmp" />
+    <Image Include="Content\Asset\dash_02.bmp" />
+    <Image Include="Content\Asset\end.bmp" />
+    <Image Include="Content\Asset\l_attack_trail.bmp" />
+    <Image Include="Content\Asset\projectile.bmp" />
+    <Image Include="Content\Asset\r_attack_trail.bmp" />
+    <Image Include="Content\Asset\air_01.bmp" />
+    <Image Include="Content\Asset\air_02.bmp" />
+    <Image Include="Content\Asset\air_03.bmp" />
+    <Image Include="Content\Asset\air_04.bmp" />
+    <Image Include="Content\Asset\attack_01.bmp" />
+    <Image Include="Content\Asset\attack_02.bmp" />
+    <Image Include="Content\Asset\attack_03.bmp" />
+    <Image Include="Content\Asset\attack_04.bmp" />
+    <Image Include="Content\Asset\attack_05.bmp" />
+    <Image Include="Content\Asset\attack_06.bmp" />
+  </ItemGroup>
+  <ItemGroup>
+    <Media Include="Content\Asset\test.wav" />
+  </ItemGroup>
+</Project>

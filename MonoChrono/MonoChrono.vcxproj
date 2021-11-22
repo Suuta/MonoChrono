@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <VCProjectVersion>15.0</VCProjectVersion>
+    <ProjectGuid>{073DD5D0-795E-4AFF-86FC-EDC6E0FD9221}</ProjectGuid>
+    <RootNamespace>MonoChrono</RootNamespace>
+    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v142</PlatformToolset>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v142</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="Shared">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <OutDir>$(SolutionDir)bin\$(Configuration)\binary</OutDir>
+    <IntDir>$(SolutionDir)bin\$(Configuration)\intermediate</IntDir>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <OutDir>$(SolutionDir)bin\$(Configuration)\binary</OutDir>
+    <IntDir>$(SolutionDir)bin\$(Configuration)\intermediate</IntDir>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <SDLCheck>false</SDLCheck>
+      <ConformanceMode>true</ConformanceMode>
+      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
+      <LanguageStandard>stdcpp17</LanguageStandard>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>false</SDLCheck>
+      <ConformanceMode>true</ConformanceMode>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <LanguageStandard>stdcpp17</LanguageStandard>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="Content\Source\Audio.cpp" />
+    <ClCompile Include="Content\Source\conioex2.cpp" />
+    <ClCompile Include="Content\Source\Enemy.cpp" />
+    <ClCompile Include="Content\Source\Game.cpp" />
+    <ClCompile Include="Content\Source\GameBase.cpp" />
+    <ClCompile Include="Content\Source\main.cpp" />
+    <ClCompile Include="Content\Source\Player.cpp" />
+    <ClCompile Include="Content\Source\Projectile.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Content\Source\Audio.h" />
+    <ClInclude Include="Content\Source\conioex2.h" />
+    <ClInclude Include="Content\Source\Enemy.h" />
+    <ClInclude Include="Content\Source\Game.h" />
+    <ClInclude Include="Content\Source\GameBase.h" />
+    <ClInclude Include="Content\Source\Player.h" />
+    <ClInclude Include="Content\Source\Projectile.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="Content\Asset\air_01.bmp" />
+    <Image Include="Content\Asset\air_02.bmp" />
+    <Image Include="Content\Asset\air_03.bmp" />
+    <Image Include="Content\Asset\air_04.bmp" />
+    <Image Include="Content\Asset\attack_01.bmp" />
+    <Image Include="Content\Asset\attack_02.bmp" />
+    <Image Include="Content\Asset\attack_03.bmp" />
+    <Image Include="Content\Asset\attack_04.bmp" />
+    <Image Include="Content\Asset\attack_05.bmp" />
+    <Image Include="Content\Asset\attack_06.bmp" />
+    <Image Include="Content\Asset\attack_trail.bmp" />
+    <Image Include="Content\Asset\dash_01.bmp" />
+    <Image Include="Content\Asset\dash_02.bmp" />
+    <Image Include="Content\Asset\end.bmp" />
+    <Image Include="Content\Asset\enemy.bmp" />
+    <Image Include="Content\Asset\hp_0.bmp" />
+    <Image Include="Content\Asset\hp_1.bmp" />
+    <Image Include="Content\Asset\hp_2.bmp" />
+    <Image Include="Content\Asset\hp_3.bmp" />
+    <Image Include="Content\Asset\idle.bmp" />
+    <Image Include="Content\Asset\idle_01.bmp" />
+    <Image Include="Content\Asset\idle_02.bmp" />
+    <Image Include="Content\Asset\l_attack_trail.bmp" />
+    <Image Include="Content\Asset\l_idle.bmp" />
+    <Image Include="Content\Asset\l_walk_01.bmp" />
+    <Image Include="Content\Asset\l_walk_02.bmp" />
+    <Image Include="Content\Asset\l_walk_03.bmp" />
+    <Image Include="Content\Asset\l_walk_04.bmp" />
+    <Image Include="Content\Asset\MonoChrono.bmp" />
+    <Image Include="Content\Asset\nier.bmp" />
+    <Image Include="Content\Asset\player.bmp" />
+    <Image Include="Content\Asset\press.bmp" />
+    <Image Include="Content\Asset\projectile.bmp" />
+    <Image Include="Content\Asset\r_attack_trail.bmp" />
+    <Image Include="Content\Asset\r_idle.bmp" />
+    <Image Include="Content\Asset\r_walk_01.bmp" />
+    <Image Include="Content\Asset\r_walk_02.bmp" />
+    <Image Include="Content\Asset\r_walk_03.bmp" />
+    <Image Include="Content\Asset\r_walk_04.bmp" />
+    <Image Include="Content\Asset\walk_01.bmp" />
+    <Image Include="Content\Asset\walk_02.bmp" />
+    <Image Include="Content\Asset\walk_03.bmp" />
+    <Image Include="Content\Asset\walk_04.bmp" />
+    <Image Include="Content\Asset\walk_05.bmp" />
+    <Image Include="Content\Asset\walk_06.bmp" />
+    <Image Include="Content\Asset\walk_07.bmp" />
+    <Image Include="Content\Asset\walk_08.bmp" />
+    <Image Include="Content\Asset\walk_09.bmp" />
+    <Image Include="Content\Asset\walk_10.bmp" />
+    <Image Include="Content\Asset\walk_11.bmp" />
+    <Image Include="Content\Asset\walk_12.bmp" />
+    <Image Include="Content\Asset\walk_13.bmp" />
+    <Image Include="Content\Asset\walk_14.bmp" />
+  </ItemGroup>
+  <ItemGroup>
+    <Media Include="Content\Asset\test.wav" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>
