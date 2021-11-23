@@ -1,4 +1,5 @@
 
+#include "conioex2.h"
 #include "GameBase.h"
 #include <chrono>
 
@@ -7,7 +8,7 @@
 
 
 GameBase::GameBase()
-	:bIsRunning(true)
+    :bIsRunning(true)
 {
 }
 
@@ -17,62 +18,62 @@ GameBase::~GameBase()
 
 void GameBase::Initialize()
 {
-	LOG("■GameBase::Initialize().\n");
-	conioex2::SetCursorVisibility(false);
+    LOG("■GameBase::Initialize().\n");
+    conioex2::SetCursorVisibility(false);
 }
 
 void GameBase::Update()
 {
-	BeginPlay();
+    BeginPlay();
 
-	std::chrono::time_point<std::chrono::system_clock> start = std::chrono::system_clock::now();
-	auto end = std::chrono::system_clock::now();
+    std::chrono::time_point<std::chrono::system_clock> start = std::chrono::system_clock::now();
+    auto end = std::chrono::system_clock::now();
 
-	while (bIsRunning)
-	{
-		conioex2::UpdateAsyncKeyInput();
-		conioex2::UpdateXBoxInput();
+    while (bIsRunning)
+    {
+        conioex2::UpdateAsyncKeyInput();
+        conioex2::UpdateXBoxInput();
 
-		// オーディオ更新
-		AudioManager::Update();
+        // オーディオ更新
+        AudioManager::Update();
 
 
-		if (conioex2::GetInputKey(Key::ESCAPE, InputState::Pressed))
-		{
-			break;
-		}
+        if (conioex2::GetInputKey(Key::ESCAPE, InputState::Pressed))
+        {
+            break;
+        }
 
-		end = std::chrono::system_clock::now();
-		std::chrono::duration<float> elapsedTime = end - start;
-		start = end;
-		float DeltaTime = elapsedTime.count();
-		
-		conioex2::ClearBuffer();
+        end = std::chrono::system_clock::now();
+        std::chrono::duration<float> elapsedTime = end - start;
+        start = end;
+        float DeltaTime = elapsedTime.count();
 
-		Tick(DeltaTime);
+        conioex2::ClearBuffer();
 
-		conioex2::Render();
+        Tick(DeltaTime);
+
+        conioex2::Render();
 #if 1
-		char title[256];
-		static DWORD time = 0;
-		static DWORD frame = 0;
-		frame++;
-		sprintf(title, "FPS :  %d", frame);
-		if (timeGetTime() - time > 1000)
-		{
-			time = timeGetTime();
-			frame = 0;
-			conioex2::SetTitle(title);
-		}
+        char title[256];
+        static DWORD time = 0;
+        static DWORD frame = 0;
+        frame++;
+        sprintf(title, "FPS :  %d", frame);
+        if (timeGetTime() - time > 1000)
+        {
+            time = timeGetTime();
+            frame = 0;
+            conioex2::SetTitle(title);
+        }
 #endif
-	}
+    }
 
-	EndPlay();
+    EndPlay();
 }
 
 void GameBase::Finalize()
 {
-	LOG("■GameBase::Finalize().\n");
-	conioex2::SetTitle("MonoChrono");
-	conioex2::SetCursorVisibility(true);
+    LOG("■GameBase::Finalize().\n");
+    conioex2::SetTitle("MonoChrono");
+    conioex2::SetCursorVisibility(true);
 }

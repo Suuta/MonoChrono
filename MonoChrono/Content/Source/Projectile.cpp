@@ -6,15 +6,15 @@
 
 Projectile::Projectile(int index, Enemy* owner, Vector2 speed, Vector2 location, EType type)
     : index(index)
-      , Location(location.X, location.Y)
-      , Speed(speed.X, speed.Y)
-      , Type(type)
-      , Owner(owner)
+    , Location(location.X, location.Y)
+    , Speed(speed.X, speed.Y)
+    , Type(type)
+    , Owner(owner)
 {
     // e‚Ì’e‰æ‘œ‚ðŽQÆ
     switch (type)
     {
-    case Normal:
+        case Normal:
         {
             Image = Owner->ProjectileImage;
             Size = Vector2(5.f, 5.f);
@@ -23,7 +23,7 @@ Projectile::Projectile(int index, Enemy* owner, Vector2 speed, Vector2 location,
         }
         break;
 
-    case Large:
+        case Large:
         {
             Image = Owner->ProjectileImage2;
             Size = Vector2(15.f, 15.f);
@@ -32,7 +32,7 @@ Projectile::Projectile(int index, Enemy* owner, Vector2 speed, Vector2 location,
         }
         break;
 
-    case Spear:
+        case Spear:
         {
             Image = Owner->SpearProjectileImage;
             Size = Vector2(4.f, 32.f);
@@ -60,7 +60,7 @@ void Projectile::Tick(float DeltaTime, float dilation)
 
     switch (Type)
     {
-    case EType::Large:
+        case EType::Large:
         {
             if (Location.X < 5.0f
                 || Location.X > static_cast<float>(conioex2::Width()) - Size.X - 5.f
@@ -72,16 +72,16 @@ void Projectile::Tick(float DeltaTime, float dilation)
         }
         break;
 
-    case EType::Spear:
+        case EType::Spear:
         {
             if (Location.Y > static_cast<float>(conioex2::Height()) - Size.Y - 5.0f)
             {
                 Destroy();
             }
         }
-        break;
+    break;
 
-    case EType::Normal:
+        case EType::Normal:
         {
             if (Location.X < 5.0f
                 || Location.X > static_cast<float>(conioex2::Width()) - Size.X - 5.f

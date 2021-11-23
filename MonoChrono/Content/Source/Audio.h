@@ -3,11 +3,11 @@
 
 
 #define WIN32_LEAN_AND_MEAN
-#include <windows.h>
+#include <Windows.h>
 #include <vector>
 #include <unordered_map>
 #include <comip.h>
-#include <xaudio2.h>
+#include <XAudio2.h>
 #include <mfidl.h>
 #include <mfreadwrite.h>
 
@@ -43,7 +43,7 @@ FORCEINLINE float SemitonesToFrequencyRatio(float Semitones)
 }
 
 
-typedef uint32_t SoundHandle;
+typedef uint64_t SoundHandle;
 
 enum SoundFileType
 {
@@ -55,8 +55,8 @@ enum SoundFileType
 
 enum SoundStatus
 {
-    SS_STOP  = 0,
-    SS_PLAY  = 1,
+    SS_STOP = 0,
+    SS_PLAY = 1,
     SS_PAUSE = 2,
 
     MAX_SOUNDSTATUS
@@ -93,11 +93,11 @@ private:
     std::wstring m_Name;
 
     IXAudio2SourceVoice*    m_pSourceVoice;
-    COMPTR(IMFSourceReader)	m_reader;
-    DWORD					m_currentStreamBuffer;
-    std::vector<BYTE>		m_buffers[MAX_BUFFER_COUNT];
-    bool					m_endOfStream;
-    SoundStatus				m_status;
+    COMPTR(IMFSourceReader) m_reader;
+    DWORD                   m_currentStreamBuffer;
+    std::vector<BYTE>       m_buffers[MAX_BUFFER_COUNT];
+    bool                    m_endOfStream;
+    SoundStatus             m_status;
 };
 
 
@@ -142,7 +142,7 @@ class AudioManager
 {
 public:
 
-    AudioManager()          = default;
+    AudioManager() = default;
     virtual ~AudioManager() = default;
 
     static SoundHandle LoadFromFile(const std::wstring& filePath, SoundFileType type);
@@ -151,13 +151,13 @@ public:
     static void Update();
     static void Fin();
 
-    static void PlayStream(SoundHandle hSound)      { m_BGMList[hSound]->Play(); }
-    static void StopStresm(SoundHandle hSound)      { m_BGMList[hSound]->Stop(); }
+    static void PlayStream(SoundHandle hSound) { m_BGMList[hSound]->Play(); }
+    static void StopStresm(SoundHandle hSound) { m_BGMList[hSound]->Stop(); }
     static bool IsPlaying(SoundHandle hSound) { return m_BGMList[hSound]->IsPlaying(); }
 
     static void PlaySE(SoundHandle hSound) { m_SEList[hSound]->Play(); }
     static void StopSE(SoundHandle hSound) { m_SEList[hSound]->Stop(); }
-                                                     
+
     static void  Pause()
     {
         for (const auto& bgm : m_BGMList) bgm.second->Pause();
@@ -183,15 +183,14 @@ public:
     static void SetPitch(SoundHandle hSound, float pitch) { m_BGMList[hSound]->SetPitch(pitch); }
 
     static void  SetStreamVolume(SoundHandle hSound, float fVol) { m_BGMList[hSound]->SetVolume(fVol); }
-    static float GetStreamVolume(SoundHandle hSound)             { m_BGMList[hSound]->GetVolume();     }
-    static void  SetSEVolume(SoundHandle hSound, float fVol)     { m_SEList[hSound]->SetVolume(fVol);  }
-    static float GetSEVolume(SoundHandle hSound)                 { m_SEList[hSound]->GetVolume();      }
+    static float GetStreamVolume(SoundHandle hSound)             { m_BGMList[hSound]->GetVolume(); }
+    static void  SetSEVolume(SoundHandle hSound, float fVol)     { m_SEList[hSound]->SetVolume(fVol); }
+    static float GetSEVolume(SoundHandle hSound)                 { m_SEList[hSound]->GetVolume(); }
 
 private:
 
     static IXAudio2*               m_pXAudio2;
     static IXAudio2MasteringVoice* m_pMasteringVoice;
-
 
     static std::unordered_map<SoundHandle, SoundStream*> m_BGMList;
     static std::unordered_map<SoundHandle, SoundEffect*> m_SEList;

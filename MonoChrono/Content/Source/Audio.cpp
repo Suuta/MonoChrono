@@ -19,8 +19,8 @@ namespace
 {
     // グローバル変数
     LPCWSTR g_pszDirSound = L"data/";
-    LPCWSTR g_pszDirBGM   = L"sound/";
-    LPCWSTR g_pszDirSE    = L"sound/";
+    LPCWSTR g_pszDirBGM = L"sound/";
+    LPCWSTR g_pszDirSE = L"sound/";
 
     HRESULT CreateMFReader(LPCWSTR mediaFile, COMPTR(IMFSourceReader)& reader, WAVEFORMATEX* wfx, size_t maxwfx)
     {
@@ -32,22 +32,19 @@ namespace
         HRESULT hr;
         COMPTR(IMFAttributes) attr;
         hr = MFCreateAttributes(&attr, 1);
-        if (FAILED(hr)) 
+        if (FAILED(hr))
             return hr;
 
- #if (_WIN32_WINNT >= 0x0602 /*_WIN32_WINNT_WIN8*/)
+#if (_WIN32_WINNT >= 0x0602 /*_WIN32_WINNT_WIN8*/)
         hr = attr->SetUINT32(MF_LOW_LATENCY, TRUE);
-        if (FAILED(hr)) 
+        if (FAILED(hr))
             return hr;
 #endif
 
         hr = MFCreateSourceReaderFromURL(mediaFile, attr, &reader);
-        if (FAILED(hr)) 
+        if (FAILED(hr))
             return hr;
 
-        //
-        // Make the output from Media Foundation PCM so XAudio2 can consume it
-        //
         COMPTR(IMFMediaType) mediaType;
         hr = MFCreateMediaType(&mediaType);
         if (FAILED(hr))
@@ -65,9 +62,6 @@ namespace
         if (FAILED(hr))
             return hr;
 
-        //
-        // Get the wave format
-        //
         COMPTR(IMFMediaType) outputMediaType;
         hr = reader->GetCurrentMediaType(MF_SOURCE_READER_FIRST_AUDIO_STREAM, &outputMediaType);
         if (FAILED(hr))
@@ -92,7 +86,7 @@ namespace
 //************************************************
 // 静的メンバ
 //************************************************
-IXAudio2*               AudioManager::m_pXAudio2        = nullptr;
+IXAudio2* AudioManager::m_pXAudio2 = nullptr;
 IXAudio2MasteringVoice* AudioManager::m_pMasteringVoice = nullptr;
 
 uint64_t AudioManager::s_SoundID = 0;
@@ -115,7 +109,7 @@ SoundStream::SoundStream(const std::wstring& name)
     , m_status(SS_STOP)
     , m_Name(name)
 {
-    for (int i = 0; i < MAX_BUFFER_COUNT; ++i) 
+    for (int i = 0; i < MAX_BUFFER_COUNT; ++i)
     {
         m_buffers[i].resize(32768);
     }
@@ -141,7 +135,6 @@ HRESULT SoundStream::Open(IXAudio2* pXAudio2, LPCWSTR pszPath)
         return hr;
     }
 
-    //hr = pXAudio2->CreateSourceVoice(&m_pSourceVoice, &wfx, XAUDIO2_VOICE_NOPITCH, 1.0f, nullptr);
     hr = pXAudio2->CreateSourceVoice(&m_pSourceVoice, &wfx, XAUDIO2_VOICE_USEFILTER, 1.0f, nullptr);
     return hr;
 }
@@ -150,8 +143,8 @@ HRESULT SoundStream::Open(IXAudio2* pXAudio2, LPCWSTR pszPath)
 void SoundStream::Update()
 {
     if (m_status != SS_PLAY) return;
-    
-    if (m_endOfStream) 
+
+    if (m_endOfStream)
     {
         Stop();
         Play();
@@ -173,7 +166,7 @@ void SoundStream::Update()
     if (FAILED(hr))
         return;
 
-    if (flags & MF_SOURCE_READERF_ENDOFSTREAM) 
+    if (flags & MF_SOURCE_READERF_ENDOFSTREAM)
     {
         m_endOfStream = true;
         return;
@@ -181,15 +174,15 @@ void SoundStream::Update()
 
     COMPTR(IMFMediaBuffer) mediaBuffer;
     hr = sample->ConvertToContiguousBuffer(&mediaBuffer);
-    if (FAILED(hr)) 
+    if (FAILED(hr))
         return;
-    
+
     BYTE* audioData = nullptr;
     DWORD sampleBufferLength = 0;
     hr = mediaBuffer->Lock(&audioData, nullptr, &sampleBufferLength);
     if (FAILED(hr))
         return;
-    
+
     std::vector<BYTE>& buffer = m_buffers[m_currentStreamBuffer];
     m_currentStreamBuffer++;
     m_currentStreamBuffer %= MAX_BUFFER_COUNT;
@@ -198,7 +191,7 @@ void SoundStream::Update()
     hr = mediaBuffer->Unlock();
     if (FAILED(hr))
         return;
-    
+
     XAUDIO2_BUFFER buf = { 0 };
     buf.AudioBytes = sampleBufferLength;
     buf.pAudioData = &buffer[0];
@@ -209,7 +202,7 @@ void SoundStream::Update()
 void SoundStream::Close()
 {
     Stop();
-    if (m_reader) 
+    if (m_reader)
     {
         m_reader->Flush(MF_SOURCE_READER_FIRST_AUDIO_STREAM);
     }
@@ -235,7 +228,7 @@ void SoundStream::Stop()
         m_pSourceVoice->Stop();
         m_pSourceVoice->FlushSourceBuffers();
 
-        if (m_reader) 
+        if (m_reader)
         {
             PROPVARIANT var = { 0 };
             var.vt = VT_I8;
@@ -249,7 +242,7 @@ void SoundStream::Stop()
 // BGM一時停止
 void SoundStream::Pause()
 {
-    if (m_pSourceVoice && m_status == SS_PLAY) 
+    if (m_pSourceVoice && m_status == SS_PLAY)
     {
         m_status = SS_PAUSE;
         m_pSourceVoice->Stop();
@@ -312,7 +305,7 @@ SoundEffect::SoundEffect(const std::wstring& name)
 // SEクラス デストラクタ
 SoundEffect::~SoundEffect()
 {
-    for (int i = 0; i < MAX_DUP; ++i) 
+    for (int i = 0; i < MAX_DUP; ++i)
     {
         SAFE_DESTROY_VOICE(m_pSourceVoice[i]);
     }
@@ -342,7 +335,7 @@ HRESULT SoundEffect::Open(IXAudio2* pXAudio2, LPCWSTR pszPath)
 
     m_bufferLength = 0;
 
-    for (;;) 
+    for (;;)
     {
         COMPTR(IMFSample) sample;
         DWORD flags = 0;
@@ -383,7 +376,7 @@ HRESULT SoundEffect::Open(IXAudio2* pXAudio2, LPCWSTR pszPath)
 void SoundEffect::Close()
 {
     Stop();
-    for (int i = 0; i < MAX_DUP; ++i) 
+    for (int i = 0; i < MAX_DUP; ++i)
     {
         SAFE_DESTROY_VOICE(m_pSourceVoice[i]);
     }
@@ -393,7 +386,7 @@ void SoundEffect::Close()
 void SoundEffect::Play()
 {
     int i;
-    for (i = 0; i < MAX_DUP; ++i) 
+    for (i = 0; i < MAX_DUP; ++i)
     {
         if (!m_pSourceVoice[i])
             continue;
@@ -403,14 +396,14 @@ void SoundEffect::Play()
 
     }
 
-    if (i >= MAX_DUP) 
+    if (i >= MAX_DUP)
     {
-        for (i = 0; i < MAX_DUP; ++i) 
+        for (i = 0; i < MAX_DUP; ++i)
         {
             if (!m_pSourceVoice[i])
                 continue;
 
-            if (m_status[i] == SS_PAUSE) 
+            if (m_status[i] == SS_PAUSE)
             {
                 Stop(i);
                 break;
@@ -420,22 +413,22 @@ void SoundEffect::Play()
         if (i >= MAX_DUP)
         {
             XAUDIO2_VOICE_STATE state = { 0 };
-            for (i = 0; i < MAX_DUP; ++i) 
+            for (i = 0; i < MAX_DUP; ++i)
             {
                 if (!m_pSourceVoice[i])
                     continue;
-                
+
                 m_pSourceVoice[i]->GetState(&state);
                 if (state.BuffersQueued > 0)
                     continue;
-                
+
                 Stop(i);
                 break;
             }
         }
 
         if (i >= MAX_DUP) // 最大まで多重再生中
-        {	
+        {
             i = rand() % MAX_DUP;
             if (!m_pSourceVoice[i])
                 return;     // 再生不可
@@ -448,7 +441,7 @@ void SoundEffect::Play()
     {
         buf.AudioBytes = m_bufferLength;
         buf.pAudioData = &m_buffer[0];
-        buf.Flags      = XAUDIO2_END_OF_STREAM;
+        buf.Flags = XAUDIO2_END_OF_STREAM;
     }
 
     m_pSourceVoice[i]->SubmitSourceBuffer(&buf);
@@ -459,11 +452,11 @@ void SoundEffect::Play()
 // SE停止
 void SoundEffect::Stop(int n)
 {
-    if (n < 0 || n >= MAX_DUP) 
+    if (n < 0 || n >= MAX_DUP)
     {
         for (int i = 0; i < MAX_DUP; ++i)
         {
-            if (m_pSourceVoice[i] && m_status[i] != SS_STOP) 
+            if (m_pSourceVoice[i] && m_status[i] != SS_STOP)
             {
                 m_status[i] = SS_STOP;
                 m_pSourceVoice[i]->Stop();
@@ -473,7 +466,7 @@ void SoundEffect::Stop(int n)
         return;
     }
 
-    if (m_pSourceVoice[n] && m_status[n] != SS_STOP) 
+    if (m_pSourceVoice[n] && m_status[n] != SS_STOP)
     {
         m_status[n] = SS_STOP;
         m_pSourceVoice[n]->Stop();
@@ -484,9 +477,9 @@ void SoundEffect::Stop(int n)
 // SE一時停止
 void SoundEffect::Pause()
 {
-    for (int i = 0; i < MAX_DUP; ++i) 
+    for (int i = 0; i < MAX_DUP; ++i)
     {
-        if (m_pSourceVoice[i] && m_status[i] == SS_PLAY) 
+        if (m_pSourceVoice[i] && m_status[i] == SS_PLAY)
         {
             m_status[i] = SS_PAUSE;
             m_pSourceVoice[i]->Stop();
@@ -499,7 +492,7 @@ void SoundEffect::Resume()
 {
     for (int i = 0; i < MAX_DUP; ++i)
     {
-        if (m_pSourceVoice[i] && m_status[i] == SS_PAUSE) 
+        if (m_pSourceVoice[i] && m_status[i] == SS_PAUSE)
         {
             m_status[i] = SS_PLAY;
             m_pSourceVoice[i]->Start();
@@ -512,7 +505,7 @@ bool SoundEffect::IsPlaying()
 {
     for (int i = 0; i < MAX_DUP; ++i)
     {
-        if (m_pSourceVoice[i] && m_status[i] == SS_PLAY) 
+        if (m_pSourceVoice[i] && m_status[i] == SS_PLAY)
             return true;
     }
     return false;
@@ -521,9 +514,9 @@ bool SoundEffect::IsPlaying()
 // SEボリューム設定
 void SoundEffect::SetVolume(float fVol)
 {
-    for (int i = 0; i < MAX_DUP; ++i) 
+    for (int i = 0; i < MAX_DUP; ++i)
     {
-        if (m_pSourceVoice[i]) 
+        if (m_pSourceVoice[i])
             m_pSourceVoice[i]->SetVolume(fVol);
     }
 }
@@ -553,28 +546,28 @@ float SoundEffect::GetVolume() const
 
 SoundHandle AudioManager::LoadFromFile(const std::wstring& filePath, SoundFileType type)
 {
-    switch(type)
+    switch (type)
     {
-        case Effect:
-        {
-            auto* se = new SoundEffect(filePath);
-            if (FAILED(se->Open(m_pXAudio2, filePath.c_str()))) {
-                ::MessageBoxW(nullptr, filePath.c_str(), L"BGM:error", MB_OK);
-            }
-
-            m_SEList[++s_SoundID] = se;
-            return s_SoundID;
+    case Effect:
+    {
+        auto* se = new SoundEffect(filePath);
+        if (FAILED(se->Open(m_pXAudio2, filePath.c_str()))) {
+            ::MessageBoxW(nullptr, filePath.c_str(), L"BGM:error", MB_OK);
         }
-        case Stream:
-        {
-            auto* bgm = new SoundStream(filePath);
-            if (FAILED(bgm->Open(m_pXAudio2, filePath.c_str()))) {
-                ::MessageBoxW(nullptr, filePath.c_str(), L"BGM:error", MB_OK);
-            }
 
-            m_BGMList[++s_SoundID] = bgm;
-            return s_SoundID;
+        m_SEList[++s_SoundID] = se;
+        return s_SoundID;
+    }
+    case Stream:
+    {
+        auto* bgm = new SoundStream(filePath);
+        if (FAILED(bgm->Open(m_pXAudio2, filePath.c_str()))) {
+            ::MessageBoxW(nullptr, filePath.c_str(), L"BGM:error", MB_OK);
         }
+
+        m_BGMList[++s_SoundID] = bgm;
+        return s_SoundID;
+    }
     }
     return NULL;
 }
@@ -626,7 +619,7 @@ void AudioManager::Init()
 // ポーリング
 void AudioManager::Update(void)
 {
-    for(const auto bgm : m_BGMList)
+    for (const auto bgm : m_BGMList)
     {
         bgm.second->Update();
     }

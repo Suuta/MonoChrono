@@ -442,5 +442,5 @@ bool Floor::IsOnFloor(Player* player)
 
 void Floor::Draw()
 {
-	conioex2::DrawImageGS(Image, Location.X, Location.Y);
+	conioex2::DrawImageGS(Image, (int)Location.X, (int)Location.Y);
 }
