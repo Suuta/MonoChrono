@@ -331,18 +331,11 @@ struct Pixel
     unsigned char B;
 };
 
-struct WavData
-{
-    WAVEFORMATEX Format; // WAVフォーマット
-    BYTE* Buffer;        // サウンドデータ
-    DWORD BufferSize;    // データサイズ
-    XAUDIO2_BUFFER Sound;// サウンドバッファ
-};
 
 struct KeyState
 {
-    bool Pressed = false;
-    bool Hold = false;
+    bool Pressed  = false;
+    bool Hold     = false;
     bool Released = false;
 };
 

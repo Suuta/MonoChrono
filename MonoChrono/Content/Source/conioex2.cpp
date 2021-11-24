@@ -988,7 +988,7 @@ namespace conioex2
         // RBG‚ÌŽO—v‘f‚ðŠi”[‚·‚é‚½‚ß‚É3”{‚Ì—ÌˆæŠm•Û‚·‚é
         sprite->Sprite = new unsigned char[(img->height * img->width) * 3];
         sprite->Height = img->height;
-        sprite->Width = img->width;
+        sprite->Width  = img->width;
 
         int elm = 0;
         for (unsigned int i = 0; i < img->height; i++)
