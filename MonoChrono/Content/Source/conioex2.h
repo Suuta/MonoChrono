@@ -422,22 +422,6 @@ namespace conioex2
             unsigned char  Height;
         };
         Image Sprite;
-
-#if 0
-        // ƒTƒEƒ“ƒh
-        struct Sound_
-        {
-            IXAudio2* XAudio2;
-            IXAudio2MasteringVoice* MasteringVoice;
-            IXAudio2SourceVoice* SourceVoice[10];
-            BYTE* WavBuffer[10];
-            DWORD WavSize[10];
-            int SoundIndex[11];
-            int SoundCurrentIndex;
-            SOUND_EFFECT_INSTANCE_FLAGS Flags;
-        };
-        Sound_ Sound;
-#endif
     };
 
 

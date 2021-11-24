@@ -122,11 +122,11 @@ BMP* CreateBMP(int width, int height)
 BMP* LoadBMP(const char* filename)
 {
     unsigned int i, j;
-    int realWidth;                    //データ上の1行分のバイト数
-    unsigned int width, height;       //画像の横と縦のピクセル数
-    unsigned int color;               //何bitのBitmapファイルであるか
-    unsigned char header[HEADERSIZE]; //ヘッダ情報を取り込む
-    unsigned char* bmpLineData;       //画像データ1行分
+    int realWidth;                    // データ上の1行分のバイト数
+    unsigned int width, height;       // 画像の横と縦のピクセル数
+    unsigned int color;               // 何bitのBitmapファイルであるか
+    unsigned char header[HEADERSIZE]; // ヘッダ情報を取り込む
+    unsigned char* bmpLineData;       // 画像データ1行分
     FILE* fp;
     BMP* img;
 
@@ -146,9 +146,9 @@ BMP* LoadBMP(const char* filename)
         return NULL;
     }
 
-    memcpy(&width, header + 18, sizeof(width));		//画像の見た目上の幅を取得
-    memcpy(&height, header + 22, sizeof(height));		//画像の高さを取得
-    memcpy(&color, header + 28, sizeof(unsigned int));	//何bitのBitmapであるかを取得
+    memcpy(&width, header + 18, sizeof(width));         // 画像の見た目上の幅を取得
+    memcpy(&height, header + 22, sizeof(height));       // 画像の高さを取得
+    memcpy(&color, header + 28, sizeof(unsigned int));  // 何bitのBitmapであるかを取得
 
     // 24bitじゃなかったら終了する
     if (color != 24)
@@ -157,10 +157,10 @@ BMP* LoadBMP(const char* filename)
         return nullptr;
     }
 
-    //RGB情報は画像の1行分が4byteの倍数で無ければならないためそれに合わせている
+    // RGB情報は画像の1行分が4byteの倍数で無ければならないためそれに合わせている
     realWidth = width * 3 + width % 4;
 
-    //画像の1行分のRGB情報を取ってくるためのバッファを動的に取得
+    // 画像の1行分のRGB情報を取ってくるためのバッファを動的に取得
     bmpLineData = (unsigned char*)malloc(sizeof(unsigned char) * realWidth);
     if (bmpLineData == NULL)
     {
@@ -168,7 +168,7 @@ BMP* LoadBMP(const char* filename)
         return NULL;
     }
 
-    //RGB情報を取り込むためのバッファを動的に取得
+    // RGB情報を取り込むためのバッファを動的に取得
     img = CreateBMP(width, height);
     if (img == NULL)
     {
@@ -177,7 +177,7 @@ BMP* LoadBMP(const char* filename)
         return NULL;
     }
 
-    //Bitmapファイルの情報は左下から右へ、下から上に並んでいる
+    // Bitmapファイルの情報は左下から右へ、下から上に並んでいる
     for (i = 0; i < height; i++)
     {
         fread(bmpLineData, 1, realWidth, fp);
@@ -198,84 +198,6 @@ BMP* LoadBMP(const char* filename)
 bool CompareColor(COLORREF table, Pixel pixel)
 {
     return table == RGB(pixel.R, pixel.G, pixel.B);
-}
-
-
-// :::::::::: サウンドヘルパー ::::::::::
-
-bool LoadWav(const char* fileName, WavData* data)
-{
-    HMMIO    hMmio = NULL;
-    MMIOINFO mmioInfo;
-    MMRESULT mmRes;
-
-    // WAVEファイルオープン
-    memset(&mmioInfo, 0, sizeof(MMIOINFO));
-    hMmio = mmioOpenA(const_cast<char*>(fileName), &mmioInfo, MMIO_READ);
-    if (hMmio == NULL)
-    {
-        return false;
-    }
-
-    // RIFFチャンク検索
-    MMCKINFO riffChunk;
-    riffChunk.fccType = mmioFOURCC('W', 'A', 'V', 'E');
-    mmRes = mmioDescend(hMmio, &riffChunk, NULL, MMIO_FINDRIFF);
-    if (mmRes != MMSYSERR_NOERROR)
-    {
-        mmioClose(hMmio, 0);
-        return false;
-    }
-
-    // フォーマットチャンク検索
-    MMCKINFO formatChunk;
-    formatChunk.ckid = mmioFOURCC('f', 'm', 't', ' ');
-    mmRes = mmioDescend(hMmio, &formatChunk, &riffChunk, MMIO_FINDCHUNK);
-    if (mmRes != MMSYSERR_NOERROR)
-    {
-        mmioClose(hMmio, 0);
-        return false;
-    }
-
-    // フォーマット取得
-    DWORD formatSize = formatChunk.cksize;
-    DWORD size = mmioRead(hMmio, reinterpret_cast<HPSTR>(&data->Format), formatSize);
-    if (size != formatSize)
-    {
-        mmioClose(hMmio, 0);
-        return false;
-    }
-
-    // RIFFチャンクに移動
-    mmioAscend(hMmio, &formatChunk, 0);
-
-    // データチャンク検索
-    MMCKINFO dataChunk;
-    dataChunk.ckid = mmioFOURCC('d', 'a', 't', 'a');
-    mmRes = mmioDescend(hMmio, &dataChunk, &riffChunk, MMIO_FINDCHUNK);
-    if (mmRes != MMSYSERR_NOERROR)
-    {
-        mmioClose(hMmio, 0);
-        return false;
-    }
-
-    // データ取得
-    data->BufferSize = dataChunk.cksize;
-    data->Buffer = new BYTE[data->BufferSize];
-    size = mmioRead(hMmio, reinterpret_cast<HPSTR>(data->Buffer), data->BufferSize);
-    if (size != dataChunk.cksize)
-    {
-        data->BufferSize = 0;
-        if (data->Buffer != NULL)
-        {
-            delete[] data->Buffer;
-            data->Buffer;
-        }
-        return false;
-    }
-
-    mmioClose(hMmio, 0);
-    return true;
 }
 
 
@@ -323,7 +245,7 @@ namespace conioex2
 
         LOG("・new GEngine.\n");
 
-        GEngine->console.hInput = GetStdHandle(STD_INPUT_HANDLE);
+        GEngine->console.hInput  = GetStdHandle(STD_INPUT_HANDLE);
         GEngine->console.hOutput = GetStdHandle(STD_OUTPUT_HANDLE);
 
         GEngine->console.WindowSize.X = width;
@@ -332,24 +254,24 @@ namespace conioex2
 
         // バッファーの情報
         GetConsoleScreenBufferInfoEx(GEngine->console.hOutput, &GEngine->console.ScreenBufferInfo);
-        GEngine->console.ScreenBufferInfo.cbSize = sizeof(CONSOLE_SCREEN_BUFFER_INFOEX);
-        GEngine->console.ScreenBufferInfo.dwSize = { GEngine->console.WindowSize.X, GEngine->console.WindowSize.Y };
+        GEngine->console.ScreenBufferInfo.cbSize   = sizeof(CONSOLE_SCREEN_BUFFER_INFOEX);
+        GEngine->console.ScreenBufferInfo.dwSize   = { GEngine->console.WindowSize.X, GEngine->console.WindowSize.Y };
         GEngine->console.ScreenBufferInfo.srWindow = { 0, 0, (short)GEngine->console.WindowSize.X, (short)GEngine->console.WindowSize.Y };
 
-        GEngine->console.ScreenBufferInfo.ColorTable[0] = RGB(12, 12, 12);
-        GEngine->console.ScreenBufferInfo.ColorTable[1] = RGB(0, 55, 218);
-        GEngine->console.ScreenBufferInfo.ColorTable[2] = RGB(19, 161, 14);
-        GEngine->console.ScreenBufferInfo.ColorTable[3] = RGB(58, 150, 221);
-        GEngine->console.ScreenBufferInfo.ColorTable[4] = RGB(197, 15, 31);
-        GEngine->console.ScreenBufferInfo.ColorTable[5] = RGB(136, 23, 152);
-        GEngine->console.ScreenBufferInfo.ColorTable[6] = RGB(193, 156, 0);
-        GEngine->console.ScreenBufferInfo.ColorTable[7] = RGB(204, 204, 204);
-        GEngine->console.ScreenBufferInfo.ColorTable[8] = RGB(118, 118, 118);
-        GEngine->console.ScreenBufferInfo.ColorTable[9] = RGB(59, 120, 255);
-        GEngine->console.ScreenBufferInfo.ColorTable[10] = RGB(22, 198, 12);
-        GEngine->console.ScreenBufferInfo.ColorTable[11] = RGB(97, 214, 214);
-        GEngine->console.ScreenBufferInfo.ColorTable[12] = RGB(231, 72, 86);
-        GEngine->console.ScreenBufferInfo.ColorTable[13] = RGB(180, 0, 158);
+        GEngine->console.ScreenBufferInfo.ColorTable[ 0] = RGB( 12,  12,  12);
+        GEngine->console.ScreenBufferInfo.ColorTable[ 1] = RGB(  0,  55, 218);
+        GEngine->console.ScreenBufferInfo.ColorTable[ 2] = RGB( 19, 161,  14);
+        GEngine->console.ScreenBufferInfo.ColorTable[ 3] = RGB( 58, 150, 221);
+        GEngine->console.ScreenBufferInfo.ColorTable[ 4] = RGB(197,  15,  31);
+        GEngine->console.ScreenBufferInfo.ColorTable[ 5] = RGB(136,  23, 152);
+        GEngine->console.ScreenBufferInfo.ColorTable[ 6] = RGB(193, 156,   0);
+        GEngine->console.ScreenBufferInfo.ColorTable[ 7] = RGB(204, 204, 204);
+        GEngine->console.ScreenBufferInfo.ColorTable[ 8] = RGB(118, 118, 118);
+        GEngine->console.ScreenBufferInfo.ColorTable[ 9] = RGB( 59, 120, 255);
+        GEngine->console.ScreenBufferInfo.ColorTable[10] = RGB( 22, 198,  12);
+        GEngine->console.ScreenBufferInfo.ColorTable[11] = RGB( 97, 214, 214);
+        GEngine->console.ScreenBufferInfo.ColorTable[12] = RGB(231,  72,  86);
+        GEngine->console.ScreenBufferInfo.ColorTable[13] = RGB(180,   0, 158);
         GEngine->console.ScreenBufferInfo.ColorTable[14] = RGB(249, 241, 165);
         GEngine->console.ScreenBufferInfo.ColorTable[15] = RGB(242, 242, 242);
 
@@ -374,17 +296,17 @@ namespace conioex2
 
         // カーソル
         GEngine->console.CursorInfo.bVisible = TRUE;
-        GEngine->console.CursorInfo.dwSize = 25;
+        GEngine->console.CursorInfo.dwSize   = 25;
         SetConsoleCursorInfo(GetOutputHandle(), &GEngine->console.CursorInfo);
 
         // フォント
         wcscpy(GEngine->console.FontInfo.FaceName, fontname);
-        GEngine->console.FontInfo.cbSize = sizeof(GEngine->console.FontInfo);
-        GEngine->console.FontInfo.nFont = 0;
+        GEngine->console.FontInfo.cbSize       = sizeof(GEngine->console.FontInfo);
+        GEngine->console.FontInfo.nFont        = 0;
         GEngine->console.FontInfo.dwFontSize.X = fontWidth;
         GEngine->console.FontInfo.dwFontSize.Y = fontHeight;
-        GEngine->console.FontInfo.FontFamily = FF_DONTCARE;
-        GEngine->console.FontInfo.FontWeight = FW_NORMAL;
+        GEngine->console.FontInfo.FontFamily   = FF_DONTCARE;
+        GEngine->console.FontInfo.FontWeight   = FW_NORMAL;
         SetCurrentConsoleFontEx(GetOutputHandle(), false, &GEngine->console.FontInfo);
 
         // バッファーの設定
@@ -517,20 +439,20 @@ namespace conioex2
     {
         GetConsoleScreenBufferInfoEx(GetOutputHandle(), &GEngine->console.ScreenBufferInfo);
 
-        GEngine->console.ScreenBufferInfo.ColorTable[0] = RGB(12, 12, 12);
-        GEngine->console.ScreenBufferInfo.ColorTable[1] = RGB(0, 55, 218);
-        GEngine->console.ScreenBufferInfo.ColorTable[2] = RGB(19, 161, 14);
-        GEngine->console.ScreenBufferInfo.ColorTable[3] = RGB(58, 150, 221);
-        GEngine->console.ScreenBufferInfo.ColorTable[4] = RGB(197, 15, 31);
-        GEngine->console.ScreenBufferInfo.ColorTable[5] = RGB(136, 23, 152);
-        GEngine->console.ScreenBufferInfo.ColorTable[6] = RGB(193, 156, 0);
-        GEngine->console.ScreenBufferInfo.ColorTable[7] = RGB(204, 204, 204);
-        GEngine->console.ScreenBufferInfo.ColorTable[8] = RGB(118, 118, 118);
-        GEngine->console.ScreenBufferInfo.ColorTable[9] = RGB(59, 120, 255);
-        GEngine->console.ScreenBufferInfo.ColorTable[10] = RGB(22, 198, 12);
-        GEngine->console.ScreenBufferInfo.ColorTable[11] = RGB(97, 214, 214);
-        GEngine->console.ScreenBufferInfo.ColorTable[12] = RGB(231, 72, 86);
-        GEngine->console.ScreenBufferInfo.ColorTable[13] = RGB(180, 0, 158);
+        GEngine->console.ScreenBufferInfo.ColorTable[ 0] = RGB( 12,  12,  12);
+        GEngine->console.ScreenBufferInfo.ColorTable[ 1] = RGB(  0,  55, 218);
+        GEngine->console.ScreenBufferInfo.ColorTable[ 2] = RGB( 19, 161,  14);
+        GEngine->console.ScreenBufferInfo.ColorTable[ 3] = RGB( 58, 150, 221);
+        GEngine->console.ScreenBufferInfo.ColorTable[ 4] = RGB(197,  15,  31);
+        GEngine->console.ScreenBufferInfo.ColorTable[ 5] = RGB(136,  23, 152);
+        GEngine->console.ScreenBufferInfo.ColorTable[ 6] = RGB(193, 156,   0);
+        GEngine->console.ScreenBufferInfo.ColorTable[ 7] = RGB(204, 204, 204);
+        GEngine->console.ScreenBufferInfo.ColorTable[ 8] = RGB(118, 118, 118);
+        GEngine->console.ScreenBufferInfo.ColorTable[ 9] = RGB( 59, 120, 255);
+        GEngine->console.ScreenBufferInfo.ColorTable[10] = RGB( 22, 198,  12);
+        GEngine->console.ScreenBufferInfo.ColorTable[11] = RGB( 97, 214, 214);
+        GEngine->console.ScreenBufferInfo.ColorTable[12] = RGB(231,  72,  86);
+        GEngine->console.ScreenBufferInfo.ColorTable[13] = RGB(180,   0, 158);
         GEngine->console.ScreenBufferInfo.ColorTable[14] = RGB(249, 241, 165);
         GEngine->console.ScreenBufferInfo.ColorTable[15] = RGB(242, 242, 242);
 
@@ -545,29 +467,29 @@ namespace conioex2
     {
         switch (mode)
         {
-        case InputMode::Input:
-        {
-            SetConsoleMode(
-                GetInputHandle(),
-                ENABLE_ECHO_INPUT |
-                ENABLE_INSERT_MODE |
-                ENABLE_LINE_INPUT |
-                ENABLE_MOUSE_INPUT |
-                ENABLE_PROCESSED_INPUT |
-                ENABLE_EXTENDED_FLAGS |
-                ENABLE_QUICK_EDIT_MODE |
-                ENABLE_WINDOW_INPUT |
-                ENABLE_VIRTUAL_TERMINAL_INPUT);
-            break;
-        }
-        case InputMode::GameInput:
-        {
-            SetConsoleMode(
-                GetInputHandle(),
-                ENABLE_EXTENDED_FLAGS |
-                ENABLE_MOUSE_INPUT);
-            break;
-        }
+            case InputMode::Input:
+            {
+                SetConsoleMode(
+                    GetInputHandle(),
+                    ENABLE_ECHO_INPUT |
+                    ENABLE_INSERT_MODE |
+                    ENABLE_LINE_INPUT |
+                    ENABLE_MOUSE_INPUT |
+                    ENABLE_PROCESSED_INPUT |
+                    ENABLE_EXTENDED_FLAGS |
+                    ENABLE_QUICK_EDIT_MODE |
+                    ENABLE_WINDOW_INPUT |
+                    ENABLE_VIRTUAL_TERMINAL_INPUT);
+                break;
+            }
+            case InputMode::GameInput:
+            {
+                SetConsoleMode(
+                    GetInputHandle(),
+                    ENABLE_EXTENDED_FLAGS |
+                    ENABLE_MOUSE_INPUT);
+                break;
+            }
         }
     }
 
@@ -634,16 +556,16 @@ namespace conioex2
             {
                 color = RGB(sprite->Sprite[p], sprite->Sprite[p + 1], sprite->Sprite[p + 2]);
 
-                if (color == GEngine->console.ScreenBufferInfo.ColorTable[0]) conioex2::Draw24(startX + x, startY + y - 1, 0, " ");
-                else if (color == GEngine->console.ScreenBufferInfo.ColorTable[1]) conioex2::Draw24(startX + x, startY + y - 1, 1, " ");
-                else if (color == GEngine->console.ScreenBufferInfo.ColorTable[2]) conioex2::Draw24(startX + x, startY + y - 1, 2, " ");
-                else if (color == GEngine->console.ScreenBufferInfo.ColorTable[3]) conioex2::Draw24(startX + x, startY + y - 1, 3, " ");
-                else if (color == GEngine->console.ScreenBufferInfo.ColorTable[4]) conioex2::Draw24(startX + x, startY + y - 1, 4, " ");
-                else if (color == GEngine->console.ScreenBufferInfo.ColorTable[5]) conioex2::Draw24(startX + x, startY + y - 1, 5, " ");
-                else if (color == GEngine->console.ScreenBufferInfo.ColorTable[6]) conioex2::Draw24(startX + x, startY + y - 1, 6, " ");
-                else if (color == GEngine->console.ScreenBufferInfo.ColorTable[7]) conioex2::Draw24(startX + x, startY + y - 1, 7, " ");
-                else if (color == GEngine->console.ScreenBufferInfo.ColorTable[8]) conioex2::Draw24(startX + x, startY + y - 1, 8, " ");
-                else if (color == GEngine->console.ScreenBufferInfo.ColorTable[9]) conioex2::Draw24(startX + x, startY + y - 1, 9, " ");
+                     if (color == GEngine->console.ScreenBufferInfo.ColorTable[ 0]) conioex2::Draw24(startX + x, startY + y - 1,  0, " ");
+                else if (color == GEngine->console.ScreenBufferInfo.ColorTable[ 1]) conioex2::Draw24(startX + x, startY + y - 1,  1, " ");
+                else if (color == GEngine->console.ScreenBufferInfo.ColorTable[ 2]) conioex2::Draw24(startX + x, startY + y - 1,  2, " ");
+                else if (color == GEngine->console.ScreenBufferInfo.ColorTable[ 3]) conioex2::Draw24(startX + x, startY + y - 1,  3, " ");
+                else if (color == GEngine->console.ScreenBufferInfo.ColorTable[ 4]) conioex2::Draw24(startX + x, startY + y - 1,  4, " ");
+                else if (color == GEngine->console.ScreenBufferInfo.ColorTable[ 5]) conioex2::Draw24(startX + x, startY + y - 1,  5, " ");
+                else if (color == GEngine->console.ScreenBufferInfo.ColorTable[ 6]) conioex2::Draw24(startX + x, startY + y - 1,  6, " ");
+                else if (color == GEngine->console.ScreenBufferInfo.ColorTable[ 7]) conioex2::Draw24(startX + x, startY + y - 1,  7, " ");
+                else if (color == GEngine->console.ScreenBufferInfo.ColorTable[ 8]) conioex2::Draw24(startX + x, startY + y - 1,  8, " ");
+                else if (color == GEngine->console.ScreenBufferInfo.ColorTable[ 9]) conioex2::Draw24(startX + x, startY + y - 1,  9, " ");
                 else if (color == GEngine->console.ScreenBufferInfo.ColorTable[10]) conioex2::Draw24(startX + x, startY + y - 1, 10, " ");
                 else if (color == GEngine->console.ScreenBufferInfo.ColorTable[11]) conioex2::Draw24(startX + x, startY + y - 1, 11, " ");
                 else if (color == GEngine->console.ScreenBufferInfo.ColorTable[12]) conioex2::Draw24(startX + x, startY + y - 1, 12, " ");
@@ -668,22 +590,22 @@ namespace conioex2
 
                 switch (color)
                 {
-                case RGB(0, 0, 0): conioex2::Draw24(startX + x, startY + y - 1, 15, " "); break;
-                case RGB(16, 16, 16): conioex2::Draw24(startX + x, startY + y - 1, 14, " "); break;
-                case RGB(32, 32, 32): conioex2::Draw24(startX + x, startY + y - 1, 13, " "); break;
-                case RGB(48, 48, 48): conioex2::Draw24(startX + x, startY + y - 1, 12, " "); break;
-                case RGB(64, 64, 64): conioex2::Draw24(startX + x, startY + y - 1, 11, " "); break;
-                case RGB(80, 80, 80): conioex2::Draw24(startX + x, startY + y - 1, 10, " "); break;
-                case RGB(96, 96, 96): conioex2::Draw24(startX + x, startY + y - 1, 9, " "); break;
-                case RGB(112, 112, 112): conioex2::Draw24(startX + x, startY + y - 1, 8, " "); break;
-                case RGB(128, 128, 128): conioex2::Draw24(startX + x, startY + y - 1, 7, " "); break;
-                case RGB(144, 144, 144): conioex2::Draw24(startX + x, startY + y - 1, 6, " "); break;
-                case RGB(160, 160, 160): conioex2::Draw24(startX + x, startY + y - 1, 5, " "); break;
-                case RGB(176, 176, 176): conioex2::Draw24(startX + x, startY + y - 1, 4, " "); break;
-                case RGB(192, 192, 192): conioex2::Draw24(startX + x, startY + y - 1, 3, " "); break;
-                case RGB(208, 208, 208): conioex2::Draw24(startX + x, startY + y - 1, 2, " "); break;
-                case RGB(224, 224, 224): conioex2::Draw24(startX + x, startY + y - 1, 1, " "); break;
-                case RGB(240, 240, 240): conioex2::Draw24(startX + x, startY + y - 1, 0, " "); break;
+                case RGB(  0,   0,   0): conioex2::Draw24(startX + x, startY + y - 1, 15, " "); break;
+                case RGB( 16,  16,  16): conioex2::Draw24(startX + x, startY + y - 1, 14, " "); break;
+                case RGB( 32,  32,  32): conioex2::Draw24(startX + x, startY + y - 1, 13, " "); break;
+                case RGB( 48,  48,  48): conioex2::Draw24(startX + x, startY + y - 1, 12, " "); break;
+                case RGB( 64,  64,  64): conioex2::Draw24(startX + x, startY + y - 1, 11, " "); break;
+                case RGB( 80,  80,  80): conioex2::Draw24(startX + x, startY + y - 1, 10, " "); break;
+                case RGB( 96,  96,  96): conioex2::Draw24(startX + x, startY + y - 1,  9, " "); break;
+                case RGB(112, 112, 112): conioex2::Draw24(startX + x, startY + y - 1,  8, " "); break;
+                case RGB(128, 128, 128): conioex2::Draw24(startX + x, startY + y - 1,  7, " "); break;
+                case RGB(144, 144, 144): conioex2::Draw24(startX + x, startY + y - 1,  6, " "); break;
+                case RGB(160, 160, 160): conioex2::Draw24(startX + x, startY + y - 1,  5, " "); break;
+                case RGB(176, 176, 176): conioex2::Draw24(startX + x, startY + y - 1,  4, " "); break;
+                case RGB(192, 192, 192): conioex2::Draw24(startX + x, startY + y - 1,  3, " "); break;
+                case RGB(208, 208, 208): conioex2::Draw24(startX + x, startY + y - 1,  2, " "); break;
+                case RGB(224, 224, 224): conioex2::Draw24(startX + x, startY + y - 1,  1, " "); break;
+                case RGB(240, 240, 240): conioex2::Draw24(startX + x, startY + y - 1,  0, " "); break;
                 }
                 p += 3;
             }
@@ -826,10 +748,10 @@ namespace conioex2
     {
         switch (state)
         {
-        case InputState::Pressed: return GEngine->Keyboard.Keys[key].Pressed;  break;
-        case InputState::Release: return GEngine->Keyboard.Keys[key].Released; break;
-        case InputState::Hold:    return GEngine->Keyboard.Keys[key].Hold;     break;
-        default:                  return false;
+            case InputState::Pressed: return GEngine->Keyboard.Keys[key].Pressed;  break;
+            case InputState::Release: return GEngine->Keyboard.Keys[key].Released; break;
+            case InputState::Hold:    return GEngine->Keyboard.Keys[key].Hold;     break;
+            default:                  return false;
         }
     }
 
@@ -845,32 +767,32 @@ namespace conioex2
         {
             switch (GEngine->Mouse.InputRecord[i].EventType)
             {
-            case FOCUS_EVENT:
-            {
-                GEngine->Mouse.IsFocusInConsole = GEngine->Mouse.InputRecord[i].Event.FocusEvent.bSetFocus;
-                break;
-            }
-            case MOUSE_EVENT:
-            {
-                switch (GEngine->Mouse.InputRecord[i].Event.MouseEvent.dwEventFlags)
+                case FOCUS_EVENT:
                 {
-                case MOUSE_MOVED:
-                {
-                    GEngine->Mouse.Location.X = GEngine->Mouse.InputRecord[i].Event.MouseEvent.dwMousePosition.X;
-                    GEngine->Mouse.Location.Y = GEngine->Mouse.InputRecord[i].Event.MouseEvent.dwMousePosition.Y;
+                    GEngine->Mouse.IsFocusInConsole = GEngine->Mouse.InputRecord[i].Event.FocusEvent.bSetFocus;
                     break;
                 }
-                case 0:
+                case MOUSE_EVENT:
                 {
-                    for (int j = 0; j < 5; j++)
+                    switch (GEngine->Mouse.InputRecord[i].Event.MouseEvent.dwEventFlags)
                     {
-                        GEngine->Mouse.NewButton[j] = (GEngine->Mouse.InputRecord[i].Event.MouseEvent.dwButtonState & (1 << j)) > 0;
+                        case MOUSE_MOVED:
+                        {
+                            GEngine->Mouse.Location.X = GEngine->Mouse.InputRecord[i].Event.MouseEvent.dwMousePosition.X;
+                            GEngine->Mouse.Location.Y = GEngine->Mouse.InputRecord[i].Event.MouseEvent.dwMousePosition.Y;
+                            break;
+                        }
+                        case 0:
+                        {
+                            for (int j = 0; j < 5; j++)
+                            {
+                                GEngine->Mouse.NewButton[j] = (GEngine->Mouse.InputRecord[i].Event.MouseEvent.dwButtonState & (1 << j)) > 0;
+                            }
+                            break;
+                        }
                     }
                     break;
                 }
-                }
-                break;
-            }
 
             default: break;
             }
@@ -903,9 +825,9 @@ namespace conioex2
     {
         switch (state)
         {
-        case InputState::Pressed: return GEngine->Mouse.Button[button].Pressed;  break;
-        case InputState::Hold:	  return GEngine->Mouse.Button[button].Hold;     break;
-        case InputState::Release: return GEngine->Mouse.Button[button].Released; break;
+            case InputState::Pressed: return GEngine->Mouse.Button[button].Pressed;  break;
+            case InputState::Hold:	  return GEngine->Mouse.Button[button].Hold;     break;
+            case InputState::Release: return GEngine->Mouse.Button[button].Released; break;
         }
         return false;
     }
@@ -976,19 +898,19 @@ namespace conioex2
             gamepad->right_stick = right_stick;
 
             int buttons_field = state.Gamepad.wButtons;
-            UpdateXBoxButtonState(&gamepad->buttons[0], GetKeyStateFromBitField(buttons_field, GAMEPAD_BUTTON_DPAD_UP));
-            UpdateXBoxButtonState(&gamepad->buttons[1], GetKeyStateFromBitField(buttons_field, GAMEPAD_BUTTON_DPAD_DOWN));
-            UpdateXBoxButtonState(&gamepad->buttons[2], GetKeyStateFromBitField(buttons_field, GAMEPAD_BUTTON_DPAD_RIGHT));
-            UpdateXBoxButtonState(&gamepad->buttons[3], GetKeyStateFromBitField(buttons_field, GAMEPAD_BUTTON_DPAD_LEFT));
+            UpdateXBoxButtonState(&gamepad->buttons[ 0], GetKeyStateFromBitField(buttons_field, GAMEPAD_BUTTON_DPAD_UP));
+            UpdateXBoxButtonState(&gamepad->buttons[ 1], GetKeyStateFromBitField(buttons_field, GAMEPAD_BUTTON_DPAD_DOWN));
+            UpdateXBoxButtonState(&gamepad->buttons[ 2], GetKeyStateFromBitField(buttons_field, GAMEPAD_BUTTON_DPAD_RIGHT));
+            UpdateXBoxButtonState(&gamepad->buttons[ 3], GetKeyStateFromBitField(buttons_field, GAMEPAD_BUTTON_DPAD_LEFT));
+                                                     
+            UpdateXBoxButtonState(&gamepad->buttons[ 4], GetKeyStateFromBitField(buttons_field, GAMEPAD_BUTTON_START));
+            UpdateXBoxButtonState(&gamepad->buttons[ 5], GetKeyStateFromBitField(buttons_field, GAMEPAD_BUTTON_BACK));
+                                                     
+            UpdateXBoxButtonState(&gamepad->buttons[ 6], GetKeyStateFromBitField(buttons_field, GAMEPAD_BUTTON_LEFT_THUMB));
+            UpdateXBoxButtonState(&gamepad->buttons[ 7], GetKeyStateFromBitField(buttons_field, GAMEPAD_BUTTON_RIGHT_THUMB));
 
-            UpdateXBoxButtonState(&gamepad->buttons[4], GetKeyStateFromBitField(buttons_field, GAMEPAD_BUTTON_START));
-            UpdateXBoxButtonState(&gamepad->buttons[5], GetKeyStateFromBitField(buttons_field, GAMEPAD_BUTTON_BACK));
-
-            UpdateXBoxButtonState(&gamepad->buttons[6], GetKeyStateFromBitField(buttons_field, GAMEPAD_BUTTON_LEFT_THUMB));
-            UpdateXBoxButtonState(&gamepad->buttons[7], GetKeyStateFromBitField(buttons_field, GAMEPAD_BUTTON_RIGHT_THUMB));
-
-            UpdateXBoxButtonState(&gamepad->buttons[8], GetKeyStateFromBitField(buttons_field, GAMEPAD_BUTTON_SHOULDER_RIGHT));
-            UpdateXBoxButtonState(&gamepad->buttons[9], GetKeyStateFromBitField(buttons_field, GAMEPAD_BUTTON_SHOULDER_LEFT));
+            UpdateXBoxButtonState(&gamepad->buttons[ 8], GetKeyStateFromBitField(buttons_field, GAMEPAD_BUTTON_SHOULDER_RIGHT));
+            UpdateXBoxButtonState(&gamepad->buttons[ 9], GetKeyStateFromBitField(buttons_field, GAMEPAD_BUTTON_SHOULDER_LEFT));
 
             UpdateXBoxButtonState(&gamepad->buttons[10], GetKeyStateFromBitField(buttons_field, GAMEPAD_BUTTON_A));
             UpdateXBoxButtonState(&gamepad->buttons[11], GetKeyStateFromBitField(buttons_field, GAMEPAD_BUTTON_B));
@@ -1010,15 +932,15 @@ namespace conioex2
     {
         switch (axis)
         {
-        case Trigger::Trigger_L:
-        {
-            return GEngine->XBox.left_trigger;
-        }
-        case Trigger::Trigger_R:
-        {
-            return GEngine->XBox.right_trigger;
-        }
-        default: return 0.0f;
+            case Trigger::Trigger_L:
+            {
+                return GEngine->XBox.left_trigger;
+            }
+            case Trigger::Trigger_R:
+            {
+                return GEngine->XBox.right_trigger;
+            }
+            default: return 0.0f;
         }
     }
 
