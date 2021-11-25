@@ -30,9 +30,9 @@ MonoChronoという個人製作のアクションゲームです。Windowsコン
 
 ## サウンドデータ
 
-**DOVA-SYNDROME**様　https://dova-s.jp/　
+使用音源まとめ
 
-からお借りしています。
+https://github.com/Suuta/MonoChrono/tree/main/MonoChrono/Content/Asset/Sound
 
 
 
