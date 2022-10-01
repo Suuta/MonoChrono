@@ -400,7 +400,7 @@ void Game::GameOverTask(float DeltaTime, float dilation)
 		//PlaySound(BGM_GameOver, false);
 		//SetVolume(BGM_GameOver, 0.5f);
 
-		AudioManager::SetStreamVolume(BGM_GameOver, 0.5f);
+		AudioManager::SetStreamVolume(BGM_GameOver, 0.1f);
 		AudioManager::PlayStream(BGM_GameOver);
 		Do = false;
 	}
