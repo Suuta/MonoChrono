@@ -30,4 +30,4 @@ MonoChronoという個人製作のアクションゲームです。Windowsコン
 
 ## ゲームシーン
 
-![monochrono](D:\Development\MonoChrono\monochrono.jpg)
+![monochrono](https://github.com/Suuta/MonoChrono/monochrono.jpg)
