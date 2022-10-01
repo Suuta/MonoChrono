@@ -27,3 +27,7 @@ MonoChronoという個人製作のアクションゲームです。Windowsコン
 |    ジャスト回避     | 敵の弾と接触するタイミングで回避 |
 
 
+
+## ゲームシーン
+
+![monochrono](D:\Development\MonoChrono\monochrono.jpg)
