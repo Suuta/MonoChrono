@@ -200,15 +200,15 @@ void Game::LoadAsset()
 #endif
 
 
-	BGM_Main     = AudioManager::LoadFromFile(L"Content/Asset/Sound/bgm.wav", SoundFileType::Stream);
-	BGM_Title    = AudioManager::LoadFromFile(L"Content/Asset/Sound/title.wav", SoundFileType::Stream);
-	BGM_Clear    = AudioManager::LoadFromFile(L"Content/Asset/Sound/clear.wav", SoundFileType::Stream);
-	BGM_GameOver = AudioManager::LoadFromFile(L"Content/Asset/Sound/gameover.wav", SoundFileType::Stream);
+	BGM_Main     = AudioManager::LoadFromFile(L"Content/Asset/Sound/bgm.mp3", SoundFileType::Stream);
+	BGM_Title    = AudioManager::LoadFromFile(L"Content/Asset/Sound/title.mp3", SoundFileType::Stream);
+	BGM_Clear    = AudioManager::LoadFromFile(L"Content/Asset/Sound/clear.mp3", SoundFileType::Stream);
+	BGM_GameOver = AudioManager::LoadFromFile(L"Content/Asset/Sound/gameover.mp3", SoundFileType::Stream);
 
-	SE_Select           = AudioManager::LoadFromFile(L"Content/Asset/Sound/Select.wav", SoundFileType::Effect);
+	SE_Select           = AudioManager::LoadFromFile(L"Content/Asset/Sound/select.mp3", SoundFileType::Effect);
 	m_Enemy->SE_Damage  = AudioManager::LoadFromFile(L"Content/Asset/Sound/hit.wav", SoundFileType::Effect);
 	m_Player->SE_Damage = AudioManager::LoadFromFile(L"Content/Asset/Sound/damage.wav", SoundFileType::Effect);
-	m_Player->SE_Attack = AudioManager::LoadFromFile(L"Content/Asset/Sound/attack.wav", SoundFileType::Effect);
+	m_Player->SE_Attack = AudioManager::LoadFromFile(L"Content/Asset/Sound/attack.mp3", SoundFileType::Effect);
 }
 
 void Game::SetGrayScale()
@@ -326,10 +326,10 @@ void Game::MainTask(float DeltaTime, float dilation)
 		//conioex2::PlaytSound(BGM_Main, true);
 		//conioex2::SetVolume(BGM_Main, 0.05f);
 
-		AudioManager::SetStreamVolume(BGM_Main, 0.05f);
+		AudioManager::SetStreamVolume(BGM_Main, 0.01f);
 		AudioManager::PlayStream(BGM_Main);
 
-		Floors[0] = new Floor(Vector2( 55.f, 150.f));  LOG("・new Floors[0]\n");
+		Floors[0] = new Floor(Vector2( 55.f, 150.f)); LOG("・new Floors[0]\n");
 		Floors[1] = new Floor(Vector2(130.f, 120.f)); LOG("・new Floors[1]\n");
 		Floors[2] = new Floor(Vector2(205.f, 150.f)); LOG("・new Floors[2]\n");
 
@@ -368,7 +368,7 @@ void Game::ClearTask(float DeltaTime, float dilation)
 		//SetVolume(BGM_Clear, 0.1f);
 
 		AudioManager::PlayStream(BGM_Clear);
-		AudioManager::SetStreamVolume(BGM_Clear, 0.1f);
+		AudioManager::SetStreamVolume(BGM_Clear, 0.03f);
 
 		Do = false;
 	}

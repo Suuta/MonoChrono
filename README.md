@@ -27,11 +27,3 @@ MonoChronoという個人製作のアクションゲームです。Windowsコン
 |    ジャスト回避     | 敵の弾と接触するタイミングで回避 |
 
 
-
-## サウンドデータ
-
-使用音源まとめ
-
-https://github.com/Suuta/MonoChrono/tree/main/MonoChrono/Content/Asset/Sound
-
-

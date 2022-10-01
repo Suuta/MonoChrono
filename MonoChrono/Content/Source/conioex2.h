@@ -359,6 +359,15 @@ namespace conioex2
         };
         Console console;
 
+        // ビットマップ画像
+        struct Image
+        {
+            unsigned char* Sprite;
+            unsigned char  Width;
+            unsigned char  Height;
+        };
+        Image Sprite;
+
         // キーボード
         struct Keyboard_
         {
@@ -406,15 +415,6 @@ namespace conioex2
             bool           enabled;
         };
         XBox_ XBox;
-
-        // ビットマップ画像
-        struct Image
-        {
-            unsigned char* Sprite;
-            unsigned char  Width;
-            unsigned char  Height;
-        };
-        Image Sprite;
     };
 
 
