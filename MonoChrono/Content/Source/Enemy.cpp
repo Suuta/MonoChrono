@@ -8,7 +8,7 @@
 Enemy::Enemy()
     : Location(200.0f, 160.0f)
     , Size(60.0f, 60.0f)
-    , HP(10.f)
+    , HP(100.f)
     , Idle(nullptr)
     , ProjectileCount(0)
     , RapidCount(0)
