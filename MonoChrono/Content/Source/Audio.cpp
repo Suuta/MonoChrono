@@ -1,5 +1,6 @@
-﻿
+
 #include "Audio.h"
+#include "conioex2.h"
 #include <cassert>
 #include <mmreg.h>
 #include <comdef.h>
@@ -650,3 +651,4 @@ void AudioManager::Fin(void)
     SAFE_DESTROY_VOICE(m_pMasteringVoice);
     SAFE_RELEASE(m_pXAudio2);
 }
+

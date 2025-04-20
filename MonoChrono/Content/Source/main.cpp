@@ -1,28 +1,33 @@
 
 #include "Game.h"
+#include <crtdbg.h>
 
 
-int main(int argc, char* argv[])
+int main()
 {
-    // COM‚Ì‰Šú‰»
-    CoInitializeEx(NULL, COINIT_MULTITHREADED);
+#if _DEBUG
+    _CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
+#endif
 
-    // ƒRƒ“ƒ\[ƒ‹‚Ì‰Šú‰»
+    // COMã®åˆæœŸåŒ–
+    (void)CoInitializeEx(NULL, COINIT_MULTITHREADED);
+
+    // ã‚³ãƒ³ã‚½ãƒ¼ãƒ«ã®åˆæœŸåŒ–
     conioex2::InitializeConsole(300, 200, "MonoChrono", 3, 3);
 
 
-    // ƒQ[ƒ€‚ÌƒOƒ[ƒoƒ‹ƒCƒ“ƒXƒ^ƒ“ƒX‚ğæ“¾
+    // ã‚²ãƒ¼ãƒ ã®ã‚°ãƒ­ãƒ¼ãƒãƒ«ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹ã‚’å–å¾—
     Game* game = Game::GetGameInstance();
 
-    game->Initialize(); // ‰Šú‰»
-    game->Update();     // XVˆ—
-    game->Finalize();   // I—¹ˆ—
+    game->Initialize(); // åˆæœŸåŒ–
+    game->Update();     // æ›´æ–°å‡¦ç†
+    game->Finalize();   // çµ‚äº†å‡¦ç†
 
 
-    // ƒRƒ“ƒ\[ƒ‹‚ÌI—¹ˆ—
+    // ã‚³ãƒ³ã‚½ãƒ¼ãƒ«ã®çµ‚äº†å‡¦ç†
     conioex2::FinalizeConsole();
 
-    // COM‚ÌI—¹ˆ—
+    // COMã®çµ‚äº†å‡¦ç†
     CoUninitialize();
 
     return 0;

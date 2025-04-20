@@ -1,6 +1,6 @@
 /************************************************
  * @file	conioex2.cpp
- * @brief	ƒRƒ“ƒ\[ƒ‹ ƒ‰ƒCƒuƒ‰ƒŠ
+ * @brief	ã‚³ãƒ³ã‚½ãƒ¼ãƒ« ãƒ©ã‚¤ãƒ–ãƒ©ãƒª
  *
  * @author	Suuta
  ************************************************/
@@ -12,7 +12,7 @@
 #include <random>
 
 
- // :::::::::: ƒOƒ[ƒoƒ‹•Ï”::::::::::
+ // :::::::::: ã‚°ãƒ­ãƒ¼ãƒãƒ«å¤‰æ•°::::::::::
 static conioex2::Engine* GEngine = nullptr;
 
 static bool bIsInit = false;
@@ -48,7 +48,7 @@ Vector2 Vector2::UnitVector(float degree)
 }
 
 
-// :::::::::: XBoxƒwƒ‹ƒp[ ::::::::::
+// :::::::::: XBoxãƒ˜ãƒ«ãƒ‘ãƒ¼ ::::::::::
 #define NormalizeStick(value)                   (((fabs((value)) / shortMAX)) * ((value) < 0? -1 : 1))
 #define NormalizeTrigger(value)                 (((fabs((value)) / ByteMAX)))
 #define NormarileVibration(value)               ((value) / ushortMAX)
@@ -90,10 +90,10 @@ void UpdateXBoxButtonState(XBoxInputState* state, XBoxInputState newstate)
     }
 }
 
-// :::::::::: ƒrƒbƒgƒ}ƒbƒvƒwƒ‹ƒp[ ::::::::::
-#define FILEHEADERSIZE 14                          // ƒtƒ@ƒCƒ‹ƒwƒbƒ_‚ÌƒTƒCƒY
-#define INFOHEADERSIZE 40                          // î•ñƒwƒbƒ_‚ÌƒTƒCƒY
-#define HEADERSIZE (FILEHEADERSIZE+INFOHEADERSIZE) // ‡ŒvƒTƒCƒY
+// :::::::::: ãƒ“ãƒƒãƒˆãƒãƒƒãƒ—ãƒ˜ãƒ«ãƒ‘ãƒ¼ ::::::::::
+#define FILEHEADERSIZE 14                          // ãƒ•ã‚¡ã‚¤ãƒ«ãƒ˜ãƒƒãƒ€ã®ã‚µã‚¤ã‚º
+#define INFOHEADERSIZE 40                          // æƒ…å ±ãƒ˜ãƒƒãƒ€ã®ã‚µã‚¤ã‚º
+#define HEADERSIZE (FILEHEADERSIZE+INFOHEADERSIZE) // åˆè¨ˆã‚µã‚¤ã‚º
 
 struct BMP
 {
@@ -102,7 +102,7 @@ struct BMP
     Pixel* data;
 };
 
-BMP* CreateBMP(int width, int height)
+BMP* AllocateBMP(int width, int height)
 {
     BMP* img = (BMP*)malloc(sizeof(BMP));
 
@@ -119,48 +119,64 @@ BMP* CreateBMP(int width, int height)
     }
 }
 
+void DeallocateBMP(BMP* img)
+{
+    if (img)
+    {
+        if (img->data)
+        {
+            free(img->data);
+        }
+
+        img->width = 0;
+        img->height = 0;
+
+        free(img);
+    }
+}
+
 BMP* LoadBMP(const char* filename)
 {
     unsigned int i, j;
-    int realWidth;                    // ƒf[ƒ^ã‚Ì1s•ª‚ÌƒoƒCƒg”
-    unsigned int width, height;       // ‰æ‘œ‚Ì‰¡‚Æc‚ÌƒsƒNƒZƒ‹”
-    unsigned int color;               // ‰½bit‚ÌBitmapƒtƒ@ƒCƒ‹‚Å‚ ‚é‚©
-    unsigned char header[HEADERSIZE]; // ƒwƒbƒ_î•ñ‚ğæ‚è‚Ş
-    unsigned char* bmpLineData;       // ‰æ‘œƒf[ƒ^1s•ª
-    FILE* fp;
-    BMP* img;
+    int realWidth;                    // ãƒ‡ãƒ¼ã‚¿ä¸Šã®1è¡Œåˆ†ã®ãƒã‚¤ãƒˆæ•°
+    unsigned int width, height;       // ç”»åƒã®æ¨ªã¨ç¸¦ã®ãƒ”ã‚¯ã‚»ãƒ«æ•°
+    unsigned int color;               // ä½•bitã®Bitmapãƒ•ã‚¡ã‚¤ãƒ«ã§ã‚ã‚‹ã‹
+    unsigned char header[HEADERSIZE]; // ãƒ˜ãƒƒãƒ€æƒ…å ±ã‚’å–ã‚Šè¾¼ã‚€
+    unsigned char* bmpLineData;       // ç”»åƒãƒ‡ãƒ¼ã‚¿1è¡Œåˆ†
 
-    if ((fp = fopen(filename, "rb")) == NULL)
+    FILE* fp = fopen(filename, "rb");
+    if (fp == NULL)
     {
         printf("error: Can't Open file.");
+        fclose(fp);
         return NULL;
     }
 
-    //ƒwƒbƒ_•”•ª‘S‚Ä‚ğæ‚è‚Ş
+    //ãƒ˜ãƒƒãƒ€éƒ¨åˆ†å…¨ã¦ã‚’å–ã‚Šè¾¼ã‚€
     fread(header, sizeof(unsigned char), HEADERSIZE, fp);
 
-    //Å‰‚Ì2ƒoƒCƒg‚ªBM(Bitmapƒtƒ@ƒCƒ‹‚Ìˆó)‚Å‚ ‚é‚©
+    //æœ€åˆã®2ãƒã‚¤ãƒˆãŒBM(Bitmapãƒ•ã‚¡ã‚¤ãƒ«ã®å°)ã§ã‚ã‚‹ã‹
     if (strncmp((const char*)header, "BM", 2))
     {
         printf("error: Not bitmap file.");
         return NULL;
     }
 
-    memcpy(&width, header + 18, sizeof(width));         // ‰æ‘œ‚ÌŒ©‚½–Úã‚Ì•‚ğæ“¾
-    memcpy(&height, header + 22, sizeof(height));       // ‰æ‘œ‚Ì‚‚³‚ğæ“¾
-    memcpy(&color, header + 28, sizeof(unsigned int));  // ‰½bit‚ÌBitmap‚Å‚ ‚é‚©‚ğæ“¾
+    memcpy(&width, header + 18, sizeof(width));         // ç”»åƒã®è¦‹ãŸç›®ä¸Šã®å¹…ã‚’å–å¾—
+    memcpy(&height, header + 22, sizeof(height));       // ç”»åƒã®é«˜ã•ã‚’å–å¾—
+    memcpy(&color, header + 28, sizeof(unsigned int));  // ä½•bitã®Bitmapã§ã‚ã‚‹ã‹ã‚’å–å¾—
 
-    // 24bit‚¶‚á‚È‚©‚Á‚½‚çI—¹‚·‚é
+    // 24bitã˜ã‚ƒãªã‹ã£ãŸã‚‰çµ‚äº†ã™ã‚‹
     if (color != 24)
     {
         printf("error: %s is not 24bit color image.", filename);
         return nullptr;
     }
 
-    // RGBî•ñ‚Í‰æ‘œ‚Ì1s•ª‚ª4byte‚Ì”{”‚Å–³‚¯‚ê‚Î‚È‚ç‚È‚¢‚½‚ß‚»‚ê‚É‡‚í‚¹‚Ä‚¢‚é
+    // RGBæƒ…å ±ã¯ç”»åƒã®1è¡Œåˆ†ãŒ4byteã®å€æ•°ã§ç„¡ã‘ã‚Œã°ãªã‚‰ãªã„ãŸã‚ãã‚Œã«åˆã‚ã›ã¦ã„ã‚‹
     realWidth = width * 3 + width % 4;
 
-    // ‰æ‘œ‚Ì1s•ª‚ÌRGBî•ñ‚ğæ‚Á‚Ä‚­‚é‚½‚ß‚Ìƒoƒbƒtƒ@‚ğ“®“I‚Éæ“¾
+    // ç”»åƒã®1è¡Œåˆ†ã®RGBæƒ…å ±ã‚’å–ã£ã¦ãã‚‹ãŸã‚ã®ãƒãƒƒãƒ•ã‚¡ã‚’å‹•çš„ã«å–å¾—
     bmpLineData = (unsigned char*)malloc(sizeof(unsigned char) * realWidth);
     if (bmpLineData == NULL)
     {
@@ -168,8 +184,8 @@ BMP* LoadBMP(const char* filename)
         return NULL;
     }
 
-    // RGBî•ñ‚ğæ‚è‚Ş‚½‚ß‚Ìƒoƒbƒtƒ@‚ğ“®“I‚Éæ“¾
-    img = CreateBMP(width, height);
+    // RGBæƒ…å ±ã‚’å–ã‚Šè¾¼ã‚€ãŸã‚ã®ãƒãƒƒãƒ•ã‚¡ã‚’å‹•çš„ã«å–å¾—D
+    BMP* img = AllocateBMP(width, height);
     if (img == NULL)
     {
         free(bmpLineData);
@@ -177,7 +193,7 @@ BMP* LoadBMP(const char* filename)
         return NULL;
     }
 
-    // Bitmapƒtƒ@ƒCƒ‹‚Ìî•ñ‚Í¶‰º‚©‚ç‰E‚ÖA‰º‚©‚çã‚É•À‚ñ‚Å‚¢‚é
+    // Bitmapãƒ•ã‚¡ã‚¤ãƒ«ã®æƒ…å ±ã¯å·¦ä¸‹ã‹ã‚‰å³ã¸ã€ä¸‹ã‹ã‚‰ä¸Šã«ä¸¦ã‚“ã§ã„ã‚‹
     for (i = 0; i < height; i++)
     {
         fread(bmpLineData, 1, realWidth, fp);
@@ -190,9 +206,14 @@ BMP* LoadBMP(const char* filename)
     }
 
     free(bmpLineData);
-
     fclose(fp);
+
     return img;
+}
+
+void UnloadBMP(BMP* img)
+{
+    DeallocateBMP(img);
 }
 
 bool CompareColor(COLORREF table, Pixel pixel)
@@ -201,7 +222,7 @@ bool CompareColor(COLORREF table, Pixel pixel)
 }
 
 
-// :::::::::: conioex2 ŠÖ”::::::::::
+// :::::::::: conioex2 é–¢æ•°::::::::::
 
 namespace conioex2
 {
@@ -232,18 +253,18 @@ namespace conioex2
 
     void InitializeConsole(int width, int height, const char* titleName, int fontWidth, int fontHeight, const WCHAR* fontname)
     {
-        LOG("¡conioex2::InitializeConsole().\n");
+        LOG("â– conioex2::InitializeConsole().\n");
 
         if (bIsInit)
         {
-            LOG("E‚·‚Å‚É‰Šú‰»‚³‚ê‚Ä‚¢‚Ü‚·.\n");
+            LOG("ãƒ»ã™ã§ã«åˆæœŸåŒ–ã•ã‚Œã¦ã„ã¾ã™.\n");
             return;
         }
 
 
         GEngine = new Engine;
 
-        LOG("Enew GEngine.\n");
+        LOG("ãƒ»new GEngine.\n");
 
         GEngine->console.hInput  = GetStdHandle(STD_INPUT_HANDLE);
         GEngine->console.hOutput = GetStdHandle(STD_OUTPUT_HANDLE);
@@ -252,7 +273,7 @@ namespace conioex2
         GEngine->console.WindowSize.Y = height;
         GEngine->console.WindowRect = { 0, 0, static_cast<short>(GEngine->console.WindowSize.X - 1), static_cast<short>(GEngine->console.WindowSize.Y - 1) };
 
-        // ƒoƒbƒtƒ@[‚Ìî•ñ
+        // ãƒãƒƒãƒ•ã‚¡ãƒ¼ã®æƒ…å ±
         GetConsoleScreenBufferInfoEx(GEngine->console.hOutput, &GEngine->console.ScreenBufferInfo);
         GEngine->console.ScreenBufferInfo.cbSize   = sizeof(CONSOLE_SCREEN_BUFFER_INFOEX);
         GEngine->console.ScreenBufferInfo.dwSize   = { GEngine->console.WindowSize.X, GEngine->console.WindowSize.Y };
@@ -275,31 +296,31 @@ namespace conioex2
         GEngine->console.ScreenBufferInfo.ColorTable[14] = RGB(249, 241, 165);
         GEngine->console.ScreenBufferInfo.ColorTable[15] = RGB(242, 242, 242);
 
-        // ƒI[ƒo[ƒTƒCƒY‚ÉI—¹
+        // ã‚ªãƒ¼ãƒãƒ¼ã‚µã‚¤ã‚ºæ™‚ã«çµ‚äº†
         /*if (GEngine->console.ScreenBufferInfo.dwMaximumWindowSize.X < width)
         {
-            conioex2::Print("w’è‚³‚ê‚½ƒRƒ“ƒ\[ƒ‹ƒTƒCƒY‚Í‘å‚«‚·‚¬‚Ü‚·B");
+            conioex2::Print("æŒ‡å®šã•ã‚ŒãŸã‚³ãƒ³ã‚½ãƒ¼ãƒ«ã‚µã‚¤ã‚ºã¯å¤§ãã™ãã¾ã™ã€‚");
             return false;
         }
         else if (GEngine->console.ScreenBufferInfo.dwMaximumWindowSize.Y < height)
         {
-            conioex2::Print("w’è‚³‚ê‚½ƒRƒ“ƒ\[ƒ‹ƒTƒCƒY‚Í‘å‚«‚·‚¬‚Ü‚·B");
+            conioex2::Print("æŒ‡å®šã•ã‚ŒãŸã‚³ãƒ³ã‚½ãƒ¼ãƒ«ã‚µã‚¤ã‚ºã¯å¤§ãã™ãã¾ã™ã€‚");
             return false;
         }*/
 
         strcpy(GEngine->console.Title, titleName);
         conioex2::SetTitle(titleName);
 
-        // ƒTƒCƒY•ÏX‰Â”\‚É‚·‚é‚½‚ß‚Éˆê“xÅ¬‰»‚·‚é
+        // ã‚µã‚¤ã‚ºå¤‰æ›´å¯èƒ½ã«ã™ã‚‹ãŸã‚ã«ä¸€åº¦æœ€å°åŒ–ã™ã‚‹
         SMALL_RECT rect = { 0, 0, 1, 1 };
         SetConsoleWindowInfo(GetOutputHandle(), TRUE, &rect);
 
-        // ƒJ[ƒ\ƒ‹
+        // ã‚«ãƒ¼ã‚½ãƒ«
         GEngine->console.CursorInfo.bVisible = TRUE;
         GEngine->console.CursorInfo.dwSize   = 25;
         SetConsoleCursorInfo(GetOutputHandle(), &GEngine->console.CursorInfo);
 
-        // ƒtƒHƒ“ƒg
+        // ãƒ•ã‚©ãƒ³ãƒˆ
         wcscpy(GEngine->console.FontInfo.FaceName, fontname);
         GEngine->console.FontInfo.cbSize       = sizeof(GEngine->console.FontInfo);
         GEngine->console.FontInfo.nFont        = 0;
@@ -309,59 +330,60 @@ namespace conioex2
         GEngine->console.FontInfo.FontWeight   = FW_NORMAL;
         SetCurrentConsoleFontEx(GetOutputHandle(), false, &GEngine->console.FontInfo);
 
-        // ƒoƒbƒtƒ@[‚Ìİ’è
+        // ãƒãƒƒãƒ•ã‚¡ãƒ¼ã®è¨­å®š
         SetConsoleScreenBufferInfoEx(GetOutputHandle(), &GEngine->console.ScreenBufferInfo);
 
-        // ƒoƒbƒtƒ@[‚ÌƒTƒCƒY
+        // ãƒãƒƒãƒ•ã‚¡ãƒ¼ã®ã‚µã‚¤ã‚º
         SetConsoleScreenBufferSize(GetOutputHandle(), COORD{ (short)GEngine->console.WindowSize.X, (short)GEngine->console.WindowSize.Y });
 
-        // ƒEƒBƒ“ƒhƒE‚Ìî•ñ
+        // ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã®æƒ…å ±
         SetConsoleWindowInfo(GetOutputHandle(), TRUE, &GEngine->console.WindowRect);
 
-        // Œ»İ‚Ìƒoƒbƒtƒ@[‚ğİ’è
+        // ç¾åœ¨ã®ãƒãƒƒãƒ•ã‚¡ãƒ¼ã‚’è¨­å®š
         SetConsoleActiveScreenBuffer(GetOutputHandle());
 
 #if 0
-        // ƒoƒbƒtƒ@[ƒTƒCƒY‚Ìƒƒ‚ƒŠŠm•ÛiŠm•ÛÏ‚İ‚È‚ç‰ğ•ú‚µ‚Ä‚©‚çŠm•Ûj
+        // ãƒãƒƒãƒ•ã‚¡ãƒ¼ã‚µã‚¤ã‚ºã®ãƒ¡ãƒ¢ãƒªç¢ºä¿ï¼ˆç¢ºä¿æ¸ˆã¿ãªã‚‰è§£æ”¾ã—ã¦ã‹ã‚‰ç¢ºä¿ï¼‰
         if (GEngine->console.ScreenBuffer == nullptr)
         {
             GEngine->console.ScreenBuffer = new CHAR_INFO[GEngine->console.WindowSize.X * GEngine->console.WindowSize.Y];
-            ::LOG("Enew GEngine->console.ScreenBuffer.\n");
+            ::LOG("ãƒ»new GEngine->console.ScreenBuffer.\n");
             ZeroMemory(GEngine->console.ScreenBuffer, sizeof(CHAR_INFO) * (GEngine->console.WindowSize.X * GEngine->console.WindowSize.Y));
         }
         else
         {
             delete GEngine->console.ScreenBuffer;
             GEngine->console.ScreenBuffer = nullptr;
-            ::LOG("Edelete GEngine->console.ScreenBuffer.\n");
+            ::LOG("ãƒ»delete GEngine->console.ScreenBuffer.\n");
 
             GEngine->console.ScreenBuffer = new CHAR_INFO[GEngine->console.WindowSize.X * GEngine->console.WindowSize.Y];
-            ::LOG("Enew GEngine->console.ScreenBuffer.\n");
+            ::LOG("ãƒ»new GEngine->console.ScreenBuffer.\n");
             ZeroMemory(GEngine->console.ScreenBuffer, sizeof(CHAR_INFO) * (GEngine->console.WindowSize.X * GEngine->console.WindowSize.Y));
         }
 #endif
 
-        // ƒoƒbƒtƒ@[ƒTƒCƒY‚Ìƒƒ‚ƒŠŠm•Û
+        // ãƒãƒƒãƒ•ã‚¡ãƒ¼ã‚µã‚¤ã‚ºã®ãƒ¡ãƒ¢ãƒªç¢ºä¿
         GEngine->console.ScreenBuffer = new CHAR_INFO[GEngine->console.WindowSize.X * GEngine->console.WindowSize.Y];
-        LOG("Enew GEngine->console.ScreenBuffer.\n");
+        LOG("ãƒ»new GEngine->console.ScreenBuffer.\n");
         ZeroMemory(GEngine->console.ScreenBuffer, sizeof(CHAR_INFO) * (GEngine->console.WindowSize.X * GEngine->console.WindowSize.Y));
 
 
-        // ƒEƒBƒ“ƒhƒE‚ÌƒŠƒTƒCƒY‚ğ‹Ö~‚·‚é
-        HWND consoleWindow = GetConsoleWindow();
-        SetWindowLongPtr(consoleWindow, GWL_STYLE, GetWindowLong(consoleWindow, GWL_STYLE) & ~WS_SYSMENU);
+        // ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã®ã‚·ã‚¹ãƒ†ãƒ ãƒ¡ãƒ‹ãƒ¥ãƒ¼ã‚’éè¡¨ç¤º
+        // çµ‚äº†å‡¦ç†ã‚’å®Ÿè¡Œã•ã›ã‚‹ãŸã‚ã«ã€ãƒ¦ãƒ¼ã‚¶ãƒ¼ãŒÃ—ãƒœã‚¿ãƒ³ã§çµ‚äº†ã•ã›ãªã„ã‚ˆã†ã«ã™ã‚‹
+        //HWND consoleWindow = GetConsoleWindow();
+        //SetWindowLongPtr(consoleWindow, GWL_STYLE, GetWindowLong(consoleWindow, GWL_STYLE) & ~WS_SYSMENU);
 
 
-        // ƒRƒ“ƒ\[ƒ‹“ü—ÍŒ`®‚ğİ’è
+        // ã‚³ãƒ³ã‚½ãƒ¼ãƒ«å…¥åŠ›å½¢å¼ã‚’è¨­å®š
         conioex2::ResetConsoleMode();
 
-        // ŠÔ‚Ì‰Šú‰»
+        // æ™‚é–“ã®åˆæœŸåŒ–
         conioex2::InitTime();
 
-        //ƒTƒEƒ“ƒh‚Ì‰Šú‰»
+        //ã‚µã‚¦ãƒ³ãƒ‰ã®åˆæœŸåŒ–
         AudioManager::Init();
 
-        // •¶šF‚Ì‰Šú‰»
+        // æ–‡å­—è‰²ã®åˆæœŸåŒ–
         conioex2::SetTextAttribute(Color::FONT_WHITE, BACK_BLACK);
 
         bIsInit = true;
@@ -369,25 +391,24 @@ namespace conioex2
 
     void FinalizeConsole()
     {
-        LOG("¡conioex2::FinalizeConsole().\n");
+        LOG("â– conioex2::FinalizeConsole().\n");
         if (bIsInit)
         {
-
             if (GEngine)
             {
                 AudioManager::Fin();
 
-                LOG("¡conioex2::DestroySound().\n");
+                LOG("â– conioex2::DestroySound().\n");
 
                 if (GEngine->console.ScreenBuffer)
                 {
                     delete GEngine->console.ScreenBuffer;
                     GEngine->console.ScreenBuffer = nullptr;
-                    LOG("Edelete GEngine->console.ScreenBuffer.\n");
+                    LOG("ãƒ»delete GEngine->console.ScreenBuffer.\n");
 
                     delete GEngine;
                     GEngine = nullptr;
-                    LOG("Edelete GEngine.\n");
+                    LOG("ãƒ»delete GEngine.\n");
                 }
 
                 bIsInit = false;
@@ -395,7 +416,7 @@ namespace conioex2
         }
         else
         {
-            LOG("E‚·‚Å‚ÉI—¹ˆ—‚ªŒÄ‚Î‚ê‚Ä‚¢‚Ü‚·B\n");
+            LOG("ãƒ»ã™ã§ã«çµ‚äº†å‡¦ç†ãŒå‘¼ã°ã‚Œã¦ã„ã¾ã™ã€‚\n");
         }
     }
 
@@ -428,7 +449,7 @@ namespace conioex2
         GetConsoleScreenBufferInfoEx(GetOutputHandle(), &GEngine->console.ScreenBufferInfo);
         GEngine->console.ScreenBufferInfo.ColorTable[index] = color;
 
-        // ŒÄ‚Ô‚½‚Ñ‚ÉƒEƒBƒ“ƒhƒEƒTƒCƒY•Ï‚í‚Á‚¿‚á‚¤‚©‚ç‘Î‰
+        // å‘¼ã¶ãŸã³ã«ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã‚µã‚¤ã‚ºå¤‰ã‚ã£ã¡ã‚ƒã†ã‹ã‚‰å¯¾å¿œ
         GEngine->console.ScreenBufferInfo.srWindow.Bottom++;
         GEngine->console.ScreenBufferInfo.srWindow.Right++;
 
@@ -456,7 +477,7 @@ namespace conioex2
         GEngine->console.ScreenBufferInfo.ColorTable[14] = RGB(249, 241, 165);
         GEngine->console.ScreenBufferInfo.ColorTable[15] = RGB(242, 242, 242);
 
-        // ŒÄ‚Ô‚½‚Ñ‚ÉƒEƒBƒ“ƒhƒEƒTƒCƒY•Ï‚í‚Á‚¿‚á‚¤‚©‚ç‘Î‰
+        // å‘¼ã¶ãŸã³ã«ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã‚µã‚¤ã‚ºå¤‰ã‚ã£ã¡ã‚ƒã†ã‹ã‚‰å¯¾å¿œ
         GEngine->console.ScreenBufferInfo.srWindow.Bottom++;
         GEngine->console.ScreenBufferInfo.srWindow.Right++;
 
@@ -985,7 +1006,7 @@ namespace conioex2
         Engine::Image* sprite = new Engine::Image;
         if (!sprite) return nullptr;
 
-        // RBG‚ÌO—v‘f‚ğŠi”[‚·‚é‚½‚ß‚É3”{‚Ì—ÌˆæŠm•Û‚·‚é
+        // RBGã®ä¸‰è¦ç´ ã‚’æ ¼ç´ã™ã‚‹ãŸã‚ã«3å€ã®é ˜åŸŸç¢ºä¿ã™ã‚‹
         sprite->Sprite = new unsigned char[(img->height * img->width) * 3];
         sprite->Height = img->height;
         sprite->Width  = img->width;
@@ -1004,28 +1025,30 @@ namespace conioex2
                 elm += 3;
             }
         }
+
+        UnloadBMP(img);
         return sprite;
     }
 
     void CreateColorTableFromImage(Engine::Image* sprite)
     {
-        COLORREF table[16] = {}; // ƒJƒ‰[ƒe[ƒuƒ‹‚Ìƒoƒbƒtƒ@
-        int elem = 0;            // ‰æ‘œƒf[ƒ^‚Ì—v‘f”
-        int index = 0;           // V‚µ‚¢F‚Ì‚É‚Ç‚ÌêŠ‚É‘}“ü‚·‚é‚©
-        bool isExitZero = false; // RGB(0, 0, 0)‚ª“ü—Í‚³‚ê‚½‚©‚Ç‚¤‚©
-        int  match = 0;          // ƒ}ƒbƒ`‚µ‚½F‚Ì”
+        COLORREF table[16] = {}; // ã‚«ãƒ©ãƒ¼ãƒ†ãƒ¼ãƒ–ãƒ«ã®ãƒãƒƒãƒ•ã‚¡
+        int elem = 0;            // ç”»åƒãƒ‡ãƒ¼ã‚¿ã®è¦ç´ æ•°
+        int index = 0;           // æ–°ã—ã„è‰²ã®æ™‚ã«ã©ã®å ´æ‰€ã«æŒ¿å…¥ã™ã‚‹ã‹
+        bool isExitZero = false; // RGB(0, 0, 0)ãŒå…¥åŠ›ã•ã‚ŒãŸã‹ã©ã†ã‹
+        int  match = 0;          // ãƒãƒƒãƒã—ãŸè‰²ã®æ•°
 
-        // ‰æ‘œƒTƒCƒY•ªic~‰¡j‚¾‚¯ƒ‹[ƒv‚·‚é
+        // ç”»åƒã‚µã‚¤ã‚ºåˆ†ï¼ˆç¸¦Ã—æ¨ªï¼‰ã ã‘ãƒ«ãƒ¼ãƒ—ã™ã‚‹
         for (int n = 0; n < (sprite->Height * sprite->Width); n++)
         {
-            // ‰æ‘œƒf[ƒ^‚©‚çƒsƒNƒZƒ‹ƒf[ƒ^‚ğì‚é
+            // ç”»åƒãƒ‡ãƒ¼ã‚¿ã‹ã‚‰ãƒ”ã‚¯ã‚»ãƒ«ãƒ‡ãƒ¼ã‚¿ã‚’ä½œã‚‹
             if (index > 15) break;
             Pixel pixel(sprite->Sprite[elem], sprite->Sprite[elem + 1], sprite->Sprite[elem + 2]);
 
-            // “ü—Í’l‚ªRGB(0, 0, 0)‚©‚Ç‚¤‚©
+            // å…¥åŠ›å€¤ãŒRGB(0, 0, 0)ã‹ã©ã†ã‹
             if ((pixel.R + pixel.G + pixel.B) == 0)
             {
-                // ‚·‚Å‚É0‚ª‚ ‚Á‚½‚çƒXƒLƒbƒv
+                // ã™ã§ã«0ãŒã‚ã£ãŸã‚‰ã‚¹ã‚­ãƒƒãƒ—
                 if (isExitZero)
                 {
                     elem += 3;
@@ -1033,7 +1056,7 @@ namespace conioex2
                 }
                 else
                 {
-                    // ‰‚ß‚Ä0‚ª“ü—Í‚³‚ê‚½ê‡‚Íƒ}ƒbƒ`AˆÈ~‚Ì0‚ÍƒXƒLƒbƒv
+                    // åˆã‚ã¦0ãŒå…¥åŠ›ã•ã‚ŒãŸå ´åˆã¯ãƒãƒƒãƒã€ä»¥é™ã®0ã¯ã‚¹ã‚­ãƒƒãƒ—
                     table[index] = RGB(pixel.R, pixel.G, pixel.B);
                     //Debug::LOG("[%2d]: R %3d, G %3d, B %3d\n", index, pixel.R, pixel.G, pixel.B);
                     index++;
@@ -1042,7 +1065,7 @@ namespace conioex2
             }
             else
             {
-                // index‰ñ‚¾‚¯ƒ‹[ƒv‚³‚¹‚é(ƒqƒbƒgEƒm[ƒqƒbƒgŠÖ‚í‚ç‚¸‘S•”ŒŸ¸‚·‚é)¨Œã‚ë‚Ì—v‘f‚Éˆê’v‚·‚é’l‚ª‚ ‚éê‡‚ª‚ ‚é‚©‚ç
+                // indexå›ã ã‘ãƒ«ãƒ¼ãƒ—ã•ã›ã‚‹(ãƒ’ãƒƒãƒˆãƒ»ãƒãƒ¼ãƒ’ãƒƒãƒˆé–¢ã‚ã‚‰ãšå…¨éƒ¨æ¤œæŸ»ã™ã‚‹)â†’å¾Œã‚ã®è¦ç´ ã«ä¸€è‡´ã™ã‚‹å€¤ãŒã‚ã‚‹å ´åˆãŒã‚ã‚‹ã‹ã‚‰
                 for (int i = 0; i < index; i++)
                 {
                     if (CompareColor(table[i], pixel))
@@ -1050,7 +1073,7 @@ namespace conioex2
                         match++;
                     }
                 }
-                // ˆê’v‚µ‚½’l‚ª1‚Â‚à–³‚¯‚ê‚Îƒe[ƒuƒ‹‚É’Ç‰Á‚·‚é
+                // ä¸€è‡´ã—ãŸå€¤ãŒ1ã¤ã‚‚ç„¡ã‘ã‚Œã°ãƒ†ãƒ¼ãƒ–ãƒ«ã«è¿½åŠ ã™ã‚‹
                 if (match == 0)
                 {
                     table[index] = RGB(pixel.R, pixel.G, pixel.B);
@@ -1095,7 +1118,7 @@ namespace conioex2
         {
             if (object->Sprite)
             {
-                delete object->Sprite; // delete[]‚¶‚á‚ËH
+                delete[] object->Sprite; // delete[]ï¼Ÿ
                 delete object;
                 return true;
             }

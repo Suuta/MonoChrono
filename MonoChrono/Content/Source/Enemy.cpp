@@ -38,7 +38,7 @@ void Enemy::Init()
     tp2 = Vector2(125.f, 50.f);
     tp3 = Vector2(200.f, 80.f);
 
-    // ’e‚ğ‘S•”‹ó‚É‚·‚é
+    // å¼¾ã‚’å…¨éƒ¨ç©ºã«ã™ã‚‹
     ProjectiletList.clear();
 }
 
@@ -53,7 +53,7 @@ void Enemy::Tick(float DeltaTime, float dilation)
 
 void Enemy::UpdatePhysics(float DeltaTime, float dilation)
 {
-    // ƒ{ƒbƒNƒXƒRƒŠƒWƒ‡ƒ“‚ÌXV
+    // ãƒœãƒƒã‚¯ã‚¹ã‚³ãƒªã‚¸ãƒ§ãƒ³ã®æ›´æ–°
     Collision.Min.X = Location.X;
     Collision.Min.Y = Location.Y;
     Collision.Max.X = Location.X + Size.X;
@@ -88,7 +88,7 @@ void Enemy::UpdateState(float deltaTime, float dilation)
     }
 
 
-    // ƒvƒŒƒCƒ„[‚ªUŒ‚’†‚Å‚È‚¯‚ê‚Îƒ_ƒ[ƒW‚ğó‚¯•t‚¯ƒtƒ‰ƒO‚É‚·‚é
+    // ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ãŒæ”»æ’ƒä¸­ã§ãªã‘ã‚Œã°ãƒ€ãƒ¡ãƒ¼ã‚¸ã‚’å—ã‘ä»˜ã‘ãƒ•ãƒ©ã‚°ã«ã™ã‚‹
     if (!Game::GetGameInstance()->m_Player->bIsAttacking)
     {
         bRecieveDamage = true;
@@ -126,7 +126,7 @@ void Enemy::Draw()
 {
     bRecieveDamage ? conioex2::DrawImageGS(Idle, (int)Location.X, (int)Location.Y) : conioex2::DrawImageGS(Damaged, (int)Location.X, (int)Location.Y);
 
-    // HP‚Ì•`‰æ
+    // HPã®æç”»
     FOR(50)
     {
         conioex2::Draw((int)Location.X + i + 5, (int)Location.Y - 10, " ", 3 << 4, 0);
@@ -198,25 +198,45 @@ void Enemy::UpdateProjectile(float DeltaTime, float dilation)
 {
     for (int i = 0; i < ProjectiletList.size(); i++)
     {
-        ProjectiletList[i]->Tick(DeltaTime, dilation);
+        ProjectiletList[i].Tick(DeltaTime, dilation);
     }
 }
 
 void Enemy::SpawnBullet(Vector2 location, Vector2 speed, EType type)
 {
     ProjectileCount++;
-    ProjectiletList.push_back(new Projectile(ProjectileCount, this, speed, location, type));
+    ProjectiletList.push_back(Projectile(ProjectileCount, this, speed, location, type));
 }
 
 void Enemy::DestroyProjectile(int index)
 {
+    // å‰Šé™¤ãƒªã‚¹ãƒˆã«è¿½åŠ 
+    // PendhingKillList.push_back(index);
+
     ProjectiletList.erase(ProjectiletList.begin() + (index - 1));
     ProjectileCount = (int)ProjectiletList.size();
-
+    
     for (int i = index - 1; i < ProjectiletList.size(); i++)
     {
-        ProjectiletList[i]->index--;
+        ProjectiletList[i].index--;
     }
+}
+
+void Enemy::DestroyPendingKills()
+{
+    // å‰Šé™¤å¾…æ©Ÿä¸­ã®å¼¾ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’ç ´æ£„
+    //for (int index : PendhingKillList)
+    //{
+    //    ProjectiletList.erase(ProjectiletList.begin() + (index - 1));
+    //    ProjectileCount = (int)ProjectiletList.size();
+    //
+    //    for (int i = index - 1; i < ProjectiletList.size(); i++)
+    //    {
+    //        ProjectiletList[i].index--;
+    //    }
+    //}
+
+    // PendhingKillList.clear();
 }
 
 void Enemy::NotifyHit(Player* projectile, float amount)
@@ -238,9 +258,11 @@ void Enemy::Damage(float amount)
     }
 }
 
-// ÅŒã‚É‰ğ•ú‚·‚é‚©‚çdelete‚µ‚È‚¢‚±‚Æ
+// æœ€å¾Œã«è§£æ”¾ã™ã‚‹ã‹ã‚‰deleteã—ãªã„ã“ã¨
 void Enemy::Dead()
 {
+    ProjectiletList.clear();
+
     AudioManager::StopStresm(Game::GetGameInstance()->BGM_Main);
     conioex2::StopVibrate();
     Game::GetGameInstance()->OpenLevel(ELevel::Clear);

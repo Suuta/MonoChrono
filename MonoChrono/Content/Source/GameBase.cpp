@@ -18,7 +18,7 @@ GameBase::~GameBase()
 
 void GameBase::Initialize()
 {
-    LOG("■GameBase::Initialize().\n");
+    LOG("笆GameBase::Initialize().\n");
     conioex2::SetCursorVisibility(false);
 }
 
@@ -34,13 +34,13 @@ void GameBase::Update()
         conioex2::UpdateAsyncKeyInput();
         conioex2::UpdateXBoxInput();
 
-        // オーディオ更新
+        // 繧ｪ繝ｼ繝�繧｣繧ｪ譖ｴ譁ｰ
         AudioManager::Update();
 
 
         if (conioex2::GetInputKey(Key::ESCAPE, InputState::Pressed))
         {
-            break;
+            bIsRunning = false;
         }
 
         end = std::chrono::system_clock::now();
@@ -53,6 +53,10 @@ void GameBase::Update()
         Tick(DeltaTime);
 
         conioex2::Render();
+
+        LateTick(DeltaTime);
+
+
 #if 1
         char title[256];
         static DWORD time = 0;
@@ -73,7 +77,7 @@ void GameBase::Update()
 
 void GameBase::Finalize()
 {
-    LOG("■GameBase::Finalize().\n");
+    LOG("笆GameBase::Finalize().\n");
     conioex2::SetTitle("MonoChrono");
     conioex2::SetCursorVisibility(true);
 }

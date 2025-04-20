@@ -13,6 +13,7 @@ struct GameBase
 
     virtual void BeginPlay() = 0;
     virtual void Tick(float DeltaTime) = 0;
+    virtual void LateTick(float DeltaTime) = 0;
     virtual void EndPlay() = 0;
 
     bool bIsRunning;

@@ -25,8 +25,8 @@ Game* Game::GetGameInstance()
 
 void Game::BeginPlay()
 {
-	m_Player = new Player; LOG("ÅEnew m_Player.\n");
-	m_Enemy  = new Enemy;  LOG("ÅEnew m_Enemy.\n");
+	m_Player = new Player; LOG("„Éªnew m_Player.\n");
+	m_Enemy  = new Enemy;  LOG("„Éªnew m_Enemy.\n");
 
 	SetGrayScale();
 	LoadAsset();
@@ -59,29 +59,37 @@ void Game::Tick(float DeltaTime)
 	}
 }
 
+void Game::LateTick(float DeltaTime)
+{
+	// ÂâäÈô§ÂæÖÊ©ü‰∏≠„ÅÆÂºæ„Ç™„Éñ„Ç∏„Çß„ÇØ„Éà„ÇíÁ†¥Ê£Ñ
+	m_Enemy->DestroyPendingKills();
+}
+
 void Game::EndPlay()
 {
-	LOG("Å°Game::EndPlay().\n");
+	UnloadAsset();
+
+	LOG("‚ñ†Game::EndPlay().\n");
 	if (m_Player)
 	{
 		delete m_Player;
 		m_Player = nullptr;
-		LOG("ÅEdelete m_Player.\n");
+		LOG("„Éªdelete m_Player.\n");
 	}
 
 	if (m_Enemy)
 	{
 		delete m_Enemy;
 		m_Enemy = nullptr;
-		LOG("ÅEdelete m_Enemy.\n");
+		LOG("„Éªdelete m_Enemy.\n");
 	}
 	
 	delete Floors[0];
-	LOG("ÅEdelete Floors[0]\n");
+	LOG("„Éªdelete Floors[0]\n");
 	delete Floors[1];
-	LOG("ÅEdelete Floors[1]\n");
+	LOG("„Éªdelete Floors[1]\n");
 	delete Floors[2];
-	LOG("ÅEdelete Floors[2]\n");
+	LOG("„Éªdelete Floors[2]\n");
 
 	//conioex2::StopSound(BGM_Main);
 	AudioManager::StopStresm(BGM_Main);
@@ -90,7 +98,7 @@ void Game::EndPlay()
 	conioex2::ClearScreen();
 	conioex2::SetTitle("MonoChrono");
 
-	// MessageBox(::GetConsoleWindow(), "ÉQÅ[ÉÄÇÕê≥èÌèIóπÇµÇ‹ÇµÇΩÅB\n ÉvÉåÉCÇµÇƒí∏Ç´Ç†ÇËÇ™Ç∆Ç§Ç≤Ç¥Ç¢Ç‹Ç∑ÅB", "Log", NULL);
+	// MessageBox(::GetConsoleWindow(), "„Ç≤„Éº„É†„ÅØÊ≠£Â∏∏ÁµÇ‰∫Ü„Åó„Åæ„Åó„Åü„ÄÇ\n „Éó„É¨„Ç§„Åó„Å¶È†Ç„Åç„ÅÇ„Çä„Åå„Å®„ÅÜ„Åî„Åñ„ÅÑ„Åæ„Åô„ÄÇ", "Log", NULL);
 }
 
 void Game::DebugOutput()
@@ -115,40 +123,40 @@ void Game::OpenLevel(ELevel level)
 
 void Game::LoadAsset()
 {
-	// îƒópâÊëú
+	// Ê±éÁî®ÁîªÂÉè
 	m_TitleBackground = conioex2::CreateImage("Content/Asset/Image/idle_01.bmp");
-	m_Titlelogo = conioex2::CreateImage("Content/Asset/Image/titlelogo.bmp");
-	m_PressA = conioex2::CreateImage("Content/Asset/Image/press.bmp");
-	m_PressB = conioex2::CreateImage("Content/Asset/Image/end.bmp");
+	m_Titlelogo       = conioex2::CreateImage("Content/Asset/Image/titlelogo.bmp");
+	m_PressA          = conioex2::CreateImage("Content/Asset/Image/press.bmp");
+	m_PressB          = conioex2::CreateImage("Content/Asset/Image/end.bmp");
 
 	m_GameOverLogo = conioex2::CreateImage("Content/Asset/Image/gameover.bmp");
-	m_ClearLogo = conioex2::CreateImage("Content/Asset/Image/clear.bmp");
+	m_ClearLogo    = conioex2::CreateImage("Content/Asset/Image/clear.bmp");
 
-	// è∞
+	// Â∫ä
 	floorImage = conioex2::CreateImage("Content/Asset/Image/floor.bmp");
 
-	// HPÉQÅ[ÉW
+	// HP„Ç≤„Éº„Ç∏
 	m_hp_1 = conioex2::CreateImage("Content/Asset/Image/hp_1.bmp");
 	m_hp_2 = conioex2::CreateImage("Content/Asset/Image/hp_2.bmp");
 	m_hp_3 = conioex2::CreateImage("Content/Asset/Image/hp_3.bmp");
 	m_hp_4 = conioex2::CreateImage("Content/Asset/Image/hp_4.bmp");
 	m_hp_5 = conioex2::CreateImage("Content/Asset/Image/hp_5.bmp");
 
-	// ÉvÉåÉCÉÑÅ[ÉAÉjÉÅÅ\ÉVÉáÉì
+	// „Éó„É¨„Ç§„É§„Éº„Ç¢„Éã„É°‚Äï„Ç∑„Éß„É≥
 	m_Player->R_IdleAnimation = conioex2::CreateImage("Content/Asset/Image/idle_01.bmp");
 	m_Player->L_IdleAnimation = conioex2::CreateImage("Content/Asset/Image/idle_02.bmp");
 
-	// ãÛíÜÉAÉjÉÅÅ[ÉVÉáÉì
+	// Á©∫‰∏≠„Ç¢„Éã„É°„Éº„Ç∑„Éß„É≥
 	m_Player->R_AirAnimation[0] = conioex2::CreateImage("Content/Asset/Image/air_01.bmp");
 	m_Player->R_AirAnimation[1] = conioex2::CreateImage("Content/Asset/Image/air_02.bmp");
 	m_Player->L_AirAnimation[0] = conioex2::CreateImage("Content/Asset/Image/air_03.bmp");
 	m_Player->L_AirAnimation[1] = conioex2::CreateImage("Content/Asset/Image/air_04.bmp");
 
-	// É_ÉbÉVÉÖÉAÉjÉÅÅ[ÉVÉáÉì
+	// „ÉÄ„ÉÉ„Ç∑„É•„Ç¢„Éã„É°„Éº„Ç∑„Éß„É≥
 	m_Player->R_DashAnimation = conioex2::CreateImage("Content/Asset/Image/dash_01.bmp");
 	m_Player->L_DashAnimation = conioex2::CreateImage("Content/Asset/Image/dash_02.bmp");
 
-	// ï‡Ç´ÉAÉjÉÅÅ[ÉVÉáÉì
+	// Ê≠©„Åç„Ç¢„Éã„É°„Éº„Ç∑„Éß„É≥
 	m_Player->R_WalkAnimation[0] = conioex2::CreateImage("Content/Asset/Image/walk_01.bmp");
 	m_Player->R_WalkAnimation[1] = conioex2::CreateImage("Content/Asset/Image/walk_02.bmp");
 	m_Player->R_WalkAnimation[2] = conioex2::CreateImage("Content/Asset/Image/walk_03.bmp");
@@ -164,7 +172,7 @@ void Game::LoadAsset()
 	m_Player->L_WalkAnimation[5] = conioex2::CreateImage("Content/Asset/Image/walk_13.bmp");
 	m_Player->L_WalkAnimation[6] = conioex2::CreateImage("Content/Asset/Image/walk_14.bmp");
 
-	// çUåÇÉAÉjÉÅÅ[ÉVÉáÉì
+	// ÊîªÊíÉ„Ç¢„Éã„É°„Éº„Ç∑„Éß„É≥
 	m_Player->R_AttackAnimation[0] = conioex2::CreateImage("Content/Asset/Image/Attack_01.bmp");
 	m_Player->R_AttackAnimation[1] = conioex2::CreateImage("Content/Asset/Image/Attack_02.bmp");
 	m_Player->R_AttackAnimation[2] = conioex2::CreateImage("Content/Asset/Image/Attack_03.bmp");
@@ -172,11 +180,11 @@ void Game::LoadAsset()
 	m_Player->L_AttackAnimation[1] = conioex2::CreateImage("Content/Asset/Image/Attack_05.bmp");
 	m_Player->L_AttackAnimation[2] = conioex2::CreateImage("Content/Asset/Image/Attack_06.bmp");
 
-	// çUåÇÉgÉåÉCÉã
+	// ÊîªÊíÉ„Éà„É¨„Ç§„É´
 	m_Player->L_attackTrail = conioex2::CreateImage("Content/Asset/Image/l_attack_trail.bmp");
 	m_Player->R_attackTrail = conioex2::CreateImage("Content/Asset/Image/r_attack_trail.bmp");
 
-	// ìGÉAÉjÉÅÅ[ÉVÉáÉì
+	// Êïµ„Ç¢„Éã„É°„Éº„Ç∑„Éß„É≥
 	m_Enemy->Idle                 = conioex2::CreateImage("Content/Asset/Image/enemy_idle_01.bmp");
 	m_Enemy->Damaged              = conioex2::CreateImage("Content/Asset/Image/enemy_damage.bmp");
 	m_Enemy->ProjectileImage      = conioex2::CreateImage("Content/Asset/Image/projectile.bmp");
@@ -185,10 +193,10 @@ void Game::LoadAsset()
 
 
 #if 0
-	// ÉsÉbÉ`ïœçXÇµÇΩÇ¢ÉTÉEÉìÉhÇÕé©çÏÉâÉCÉuÉâÉäÇÃï˚égÇ§
+	// „Éî„ÉÉ„ÉÅÂ§âÊõ¥„Åó„Åü„ÅÑ„Çµ„Ç¶„É≥„Éâ„ÅØËá™‰Ωú„É©„Ç§„Éñ„É©„É™„ÅÆÊñπ‰Ωø„ÅÜ
 	BGM_Main = conioex2::LoadSound("Content/Asset/Sound/bgm.wav");
 
-	// ÇªÇÃëºÇÃÉTÉEÉìÉhÇÕêÊê∂ÇÃÉâÉCÉuÉâÉäégÇ§
+	// „Åù„ÅÆ‰ªñ„ÅÆ„Çµ„Ç¶„É≥„Éâ„ÅØÂÖàÁîü„ÅÆ„É©„Ç§„Éñ„É©„É™‰Ωø„ÅÜ
 	BGM_Title    = CreateSound("Content/Asset/Sound/title.wav");
 	BGM_Clear    = CreateSound("Content/Asset/Sound/clear.wav");
 	BGM_GameOver = CreateSound("Content/Asset/Sound/gameover.wav");
@@ -199,7 +207,9 @@ void Game::LoadAsset()
 	m_Player->SE_Attack = CreateSound("Content/Asset/Sound/attack.wav");
 #endif
 
-
+	//=========================================================================
+	// „Ç™„Éº„Éá„Ç£„Ç™„Ç¢„Çª„ÉÉ„Éà„ÅØ„Éû„Éç„Éº„Ç∏„É£ÂÅ¥„Åå‰∏ÄÊã¨Ëß£Êîæ„Åô„Çã„ÅÆ„Åß„ÄÅUnloadAsset„Åß„ÅØËß£ÊîæÂá¶ÁêÜ„ÅØË°å„Çè„Å™„ÅÑ
+	//=========================================================================
 	BGM_Main     = AudioManager::LoadFromFile(L"Content/Asset/Sound/bgm.mp3", SoundFileType::Stream);
 	BGM_Title    = AudioManager::LoadFromFile(L"Content/Asset/Sound/title.mp3", SoundFileType::Stream);
 	BGM_Clear    = AudioManager::LoadFromFile(L"Content/Asset/Sound/clear.mp3", SoundFileType::Stream);
@@ -209,6 +219,90 @@ void Game::LoadAsset()
 	m_Enemy->SE_Damage  = AudioManager::LoadFromFile(L"Content/Asset/Sound/hit.wav", SoundFileType::Effect);
 	m_Player->SE_Damage = AudioManager::LoadFromFile(L"Content/Asset/Sound/damage.wav", SoundFileType::Effect);
 	m_Player->SE_Attack = AudioManager::LoadFromFile(L"Content/Asset/Sound/attack.mp3", SoundFileType::Effect);
+}
+
+void Game::UnloadAsset()
+{
+	// Ê±éÁî®ÁîªÂÉè
+	conioex2::ReleaseImage(m_TitleBackground);
+	conioex2::ReleaseImage(m_Titlelogo);
+	conioex2::ReleaseImage(m_PressA);
+	conioex2::ReleaseImage(m_PressB);
+	conioex2::ReleaseImage(m_GameOverLogo);
+	conioex2::ReleaseImage(m_ClearLogo);
+
+	// Â∫ä
+	conioex2::ReleaseImage(floorImage);
+
+	// HP„Ç≤„Éº„Ç∏
+	conioex2::ReleaseImage(m_hp_1);
+	conioex2::ReleaseImage(m_hp_2);
+	conioex2::ReleaseImage(m_hp_3);
+	conioex2::ReleaseImage(m_hp_4);
+	conioex2::ReleaseImage(m_hp_5);
+
+	// „Éó„É¨„Ç§„É§„Éº„Ç¢„Éã„É°‚Äï„Ç∑„Éß„É≥
+	conioex2::ReleaseImage(m_Player->R_IdleAnimation);
+	conioex2::ReleaseImage(m_Player->L_IdleAnimation);
+
+	// Á©∫‰∏≠„Ç¢„Éã„É°„Éº„Ç∑„Éß„É≥
+	conioex2::ReleaseImage(m_Player->R_AirAnimation[0]);
+	conioex2::ReleaseImage(m_Player->R_AirAnimation[1]);
+	conioex2::ReleaseImage(m_Player->L_AirAnimation[0]);
+	conioex2::ReleaseImage(m_Player->L_AirAnimation[1]);
+
+	// „ÉÄ„ÉÉ„Ç∑„É•„Ç¢„Éã„É°„Éº„Ç∑„Éß„É≥
+	conioex2::ReleaseImage(m_Player->R_DashAnimation);
+	conioex2::ReleaseImage(m_Player->L_DashAnimation);
+
+	// Ê≠©„Åç„Ç¢„Éã„É°„Éº„Ç∑„Éß„É≥
+	conioex2::ReleaseImage(m_Player->R_WalkAnimation[0]);
+	conioex2::ReleaseImage(m_Player->R_WalkAnimation[1]);
+	conioex2::ReleaseImage(m_Player->R_WalkAnimation[2]);
+	conioex2::ReleaseImage(m_Player->R_WalkAnimation[3]);
+	conioex2::ReleaseImage(m_Player->R_WalkAnimation[4]);
+	conioex2::ReleaseImage(m_Player->R_WalkAnimation[5]);
+	conioex2::ReleaseImage(m_Player->R_WalkAnimation[6]);
+
+	conioex2::ReleaseImage(m_Player->L_WalkAnimation[0]);
+	conioex2::ReleaseImage(m_Player->L_WalkAnimation[1]);
+	conioex2::ReleaseImage(m_Player->L_WalkAnimation[2]);
+	conioex2::ReleaseImage(m_Player->L_WalkAnimation[3]);
+	conioex2::ReleaseImage(m_Player->L_WalkAnimation[4]);
+	conioex2::ReleaseImage(m_Player->L_WalkAnimation[5]);
+	conioex2::ReleaseImage(m_Player->L_WalkAnimation[6]);
+
+	// ÊîªÊíÉ„Ç¢„Éã„É°„Éº„Ç∑„Éß„É≥
+	conioex2::ReleaseImage(m_Player->R_AttackAnimation[0]);
+	conioex2::ReleaseImage(m_Player->R_AttackAnimation[1]);
+	conioex2::ReleaseImage(m_Player->R_AttackAnimation[2]);
+
+	conioex2::ReleaseImage(m_Player->L_AttackAnimation[0]);
+	conioex2::ReleaseImage(m_Player->L_AttackAnimation[1]);
+	conioex2::ReleaseImage(m_Player->L_AttackAnimation[2]);
+
+	// ÊîªÊíÉ„Éà„É¨„Ç§„É´
+	conioex2::ReleaseImage(m_Player->L_attackTrail);
+	conioex2::ReleaseImage(m_Player->R_attackTrail);
+
+	// Êïµ„Ç¢„Éã„É°„Éº„Ç∑„Éß„É≥
+	conioex2::ReleaseImage(m_Enemy->Idle);
+	conioex2::ReleaseImage(m_Enemy->Damaged);
+	conioex2::ReleaseImage(m_Enemy->ProjectileImage);
+	conioex2::ReleaseImage(m_Enemy->ProjectileImage2);
+	conioex2::ReleaseImage(m_Enemy->SpearProjectileImage);
+
+	//=========================================================================
+	// „Ç™„Éº„Éá„Ç£„Ç™„Ç¢„Çª„ÉÉ„Éà„ÅØ„Éû„Éç„Éº„Ç∏„É£ÂÅ¥„Åå‰∏ÄÊã¨Ëß£Êîæ„Åô„Çã„ÅÆ„Åß„ÄÅUnloadAsset„Åß„ÅØËß£ÊîæÂá¶ÁêÜ„ÅØË°å„Çè„Å™„ÅÑ
+	//=========================================================================
+	// BGM_Main;
+	// BGM_Title;
+	// BGM_Clear;
+	// BGM_GameOver;
+	// SE_Select;
+	// m_Enemy->SE_Damage;
+	// m_Player->SE_Damage;
+	// m_Player->SE_Attack;
 }
 
 void Game::SetGrayScale()
@@ -272,7 +366,7 @@ void Game::TitleTask(float DeltaTime, float dilation)
 		Do = false;
 	}
 
-	// ÉÅÉCÉìÉåÉxÉãÇ÷à⁄ìÆ
+	// „É°„Ç§„É≥„É¨„Éô„É´„Å∏ÁßªÂãï
 	if (conioex2::GetInputXBoxButton(Button::XBox_Button_B, XBoxInputState::XBox_Pressed))
 	{
 		//PlaySound(SE_Select, false);
@@ -322,16 +416,16 @@ void Game::MainTask(float DeltaTime, float dilation)
 	static bool Do = true;
 	if (Do)
 	{
-		LOG("Å°Game::MainTask()\n");
+		LOG("‚ñ†Game::MainTask()\n");
 		//conioex2::PlaytSound(BGM_Main, true);
 		//conioex2::SetVolume(BGM_Main, 0.05f);
 
 		AudioManager::SetStreamVolume(BGM_Main, 0.01f);
 		AudioManager::PlayStream(BGM_Main);
 
-		Floors[0] = new Floor(Vector2( 55.f, 150.f)); LOG("ÅEnew Floors[0]\n");
-		Floors[1] = new Floor(Vector2(130.f, 120.f)); LOG("ÅEnew Floors[1]\n");
-		Floors[2] = new Floor(Vector2(205.f, 150.f)); LOG("ÅEnew Floors[2]\n");
+		Floors[0] = new Floor(Vector2( 55.f, 150.f)); LOG("„Éªnew Floors[0]\n");
+		Floors[1] = new Floor(Vector2(130.f, 120.f)); LOG("„Éªnew Floors[1]\n");
+		Floors[2] = new Floor(Vector2(205.f, 150.f)); LOG("„Éªnew Floors[2]\n");
 
 		if (m_Enemy)
 		{
@@ -373,7 +467,7 @@ void Game::ClearTask(float DeltaTime, float dilation)
 		Do = false;
 	}
 
-	// ÉQÅ[ÉÄÇèIóπÇ≥ÇπÇÈ
+	// „Ç≤„Éº„É†„ÇíÁµÇ‰∫Ü„Åï„Åõ„Çã
 	if (conioex2::GetInputXBoxButton(Button::XBox_Button_B, XBoxInputState::XBox_Pressed))
 	{
 		//PlaySound(SE_Select, false);
@@ -405,7 +499,7 @@ void Game::GameOverTask(float DeltaTime, float dilation)
 		Do = false;
 	}
 
-	// ÉQÅ[ÉÄÇèIóπÇ≥ÇπÇÈ
+	// „Ç≤„Éº„É†„ÇíÁµÇ‰∫Ü„Åï„Åõ„Çã
 	if (conioex2::GetInputXBoxButton(Button::XBox_Button_B, XBoxInputState::XBox_Pressed))
 	{
 		//PlaySound(SE_Select, false);
@@ -424,7 +518,7 @@ void Game::SetTimeDilation(float Dilation)
 	TimeDilation = Dilation;
 }
 
-// ÉXÉeÅ[ÉWÇÃè∞
+// „Çπ„ÉÜ„Éº„Ç∏„ÅÆÂ∫ä
 Floor::Floor(Vector2 location)
 	: Location(location)
 	, Size(Vector2(45.f, 4.f))

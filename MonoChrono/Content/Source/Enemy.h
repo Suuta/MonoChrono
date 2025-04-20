@@ -12,7 +12,7 @@ struct Enemy
     Enemy();
     ~Enemy();
 
-    // À•WŒnƒpƒ‰ƒ[ƒ^[
+    // åº§æ¨™ç³»ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿ãƒ¼
     Vector2 Location;
     Vector2 Size;
 
@@ -38,19 +38,22 @@ struct Enemy
     void UpdateProjectile(float DeltaTime, float dilation);
     void DestroyProjectile(int index);
 
+    void DestroyPendingKills();
+
     void NotifyHit(Player* projectile, float amount);
     void Damage(float amount);
     void Dead();
 
-    // ‰æ‘œ
+    // ç”»åƒ
     conioex2::Engine::Image* Idle;
     conioex2::Engine::Image* Damaged;
     conioex2::Engine::Image* ProjectileImage;
     conioex2::Engine::Image* ProjectileImage2;
     conioex2::Engine::Image* SpearProjectileImage;
 
-    // ’e
-    std::vector<Projectile*> ProjectiletList;
+    // å¼¾
+    std::vector<Projectile> ProjectiletList;
+    //std::vector<int>        PendhingKillList;
 
     int ProjectileCount;
 

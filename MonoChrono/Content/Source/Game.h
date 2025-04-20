@@ -36,13 +36,15 @@ struct Game : public GameBase
 
     static Game* GetGameInstance();
 
-    void BeginPlay() override;           // ŠJnˆ—
-    void Tick(float DeltaTime) override; // –ˆƒtƒŒ[ƒ€Às
-    void EndPlay() override;             // I—¹ˆ—
+    void BeginPlay()               override; // é–‹å§‹å‡¦ç†
+    void Tick(float DeltaTime)     override; // æ¯ãƒ•ãƒ¬ãƒ¼ãƒ å®Ÿè¡Œ
+    void LateTick(float DeltaTime) override; // é…å»¶ãƒ•ãƒ¬ãƒ¼ãƒ æ›´æ–°
+    void EndPlay()                 override; // çµ‚äº†å‡¦ç†
 
     void DebugOutput();
     void OpenLevel(ELevel level);
     void LoadAsset();
+    void UnloadAsset();
     void SetTimeDilation(float timeDilation);
 
     void SetGrayScale();
@@ -68,7 +70,9 @@ struct Game : public GameBase
     conioex2::Engine::Image* m_PressA;
     conioex2::Engine::Image* m_PressB;
 
-    conioex2::Engine::Image* m_hp_0;
+    // HP0 == gameover ã ã‹ã‚‰ä¸å¿…è¦
+    //conioex2::Engine::Image* m_hp_0;
+
     conioex2::Engine::Image* m_hp_1;
     conioex2::Engine::Image* m_hp_2;
     conioex2::Engine::Image* m_hp_3;
