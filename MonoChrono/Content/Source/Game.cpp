@@ -25,8 +25,8 @@ Game* Game::GetGameInstance()
 
 void Game::BeginPlay()
 {
-	m_Player = new Player; LOG("・new m_Player.\n");
-	m_Enemy  = new Enemy;  LOG("・new m_Enemy.\n");
+	m_Player = new Player; LOG("new m_Player.\n");
+	m_Enemy  = new Enemy;  LOG("new m_Enemy.\n");
 
 	SetGrayScale();
 	LoadAsset();
@@ -69,27 +69,27 @@ void Game::EndPlay()
 {
 	UnloadAsset();
 
-	LOG("■Game::EndPlay().\n");
+	LOG("Game::EndPlay().\n");
 	if (m_Player)
 	{
 		delete m_Player;
 		m_Player = nullptr;
-		LOG("・delete m_Player.\n");
+		LOG("delete m_Player.\n");
 	}
 
 	if (m_Enemy)
 	{
 		delete m_Enemy;
 		m_Enemy = nullptr;
-		LOG("・delete m_Enemy.\n");
+		LOG("delete m_Enemy.\n");
 	}
 	
 	delete Floors[0];
-	LOG("・delete Floors[0]\n");
+	LOG("delete Floors[0]\n");
 	delete Floors[1];
-	LOG("・delete Floors[1]\n");
+	LOG("delete Floors[1]\n");
 	delete Floors[2];
-	LOG("・delete Floors[2]\n");
+	LOG("delete Floors[2]\n");
 
 	//conioex2::StopSound(BGM_Main);
 	AudioManager::StopStresm(BGM_Main);
@@ -367,7 +367,8 @@ void Game::TitleTask(float DeltaTime, float dilation)
 	}
 
 	// メインレベルへ移動
-	if (conioex2::GetInputXBoxButton(Button::XBox_Button_B, XBoxInputState::XBox_Pressed))
+	if (conioex2::GetInputXBoxButton(Button::XBox_Button_B, XBoxInputState::XBox_Pressed) ||
+		conioex2::GetInputKey(Key::B, InputState::Pressed))
 	{
 		//PlaySound(SE_Select, false);
 		//SetVolume(SE_Select, 0.1f);
@@ -416,16 +417,16 @@ void Game::MainTask(float DeltaTime, float dilation)
 	static bool Do = true;
 	if (Do)
 	{
-		LOG("■Game::MainTask()\n");
+		LOG("Game::MainTask()\n");
 		//conioex2::PlaytSound(BGM_Main, true);
 		//conioex2::SetVolume(BGM_Main, 0.05f);
 
 		AudioManager::SetStreamVolume(BGM_Main, 0.01f);
 		AudioManager::PlayStream(BGM_Main);
 
-		Floors[0] = new Floor(Vector2( 55.f, 150.f)); LOG("・new Floors[0]\n");
-		Floors[1] = new Floor(Vector2(130.f, 120.f)); LOG("・new Floors[1]\n");
-		Floors[2] = new Floor(Vector2(205.f, 150.f)); LOG("・new Floors[2]\n");
+		Floors[0] = new Floor(Vector2( 55.f, 150.f)); LOG("new Floors[0]\n");
+		Floors[1] = new Floor(Vector2(130.f, 120.f)); LOG("new Floors[1]\n");
+		Floors[2] = new Floor(Vector2(205.f, 150.f)); LOG("new Floors[2]\n");
 
 		if (m_Enemy)
 		{
@@ -468,7 +469,8 @@ void Game::ClearTask(float DeltaTime, float dilation)
 	}
 
 	// ゲームを終了させる
-	if (conioex2::GetInputXBoxButton(Button::XBox_Button_B, XBoxInputState::XBox_Pressed))
+	if (conioex2::GetInputXBoxButton(Button::XBox_Button_B, XBoxInputState::XBox_Pressed) ||
+		conioex2::GetInputKey(Key::B, InputState::Pressed))
 	{
 		//PlaySound(SE_Select, false);
 		//SetVolume(SE_Select, 0.1f);
@@ -500,7 +502,8 @@ void Game::GameOverTask(float DeltaTime, float dilation)
 	}
 
 	// ゲームを終了させる
-	if (conioex2::GetInputXBoxButton(Button::XBox_Button_B, XBoxInputState::XBox_Pressed))
+	if (conioex2::GetInputXBoxButton(Button::XBox_Button_B, XBoxInputState::XBox_Pressed) ||
+		conioex2::GetInputKey(Key::B, InputState::Pressed))
 	{
 		//PlaySound(SE_Select, false);
 		//SetVolume(SE_Select, 0.1f);

@@ -1,6 +1,6 @@
 /************************************************
  * @file	conioex2.h
- * @brief	ƒRƒ“ƒ\[ƒ‹ ƒ‰ƒCƒuƒ‰ƒŠ
+ * @brief	ã‚³ãƒ³ã‚½ãƒ¼ãƒ« ãƒ©ã‚¤ãƒ–ãƒ©ãƒª
  *
  * @author	Suuta
  ************************************************/
@@ -9,13 +9,13 @@
 
 #define _CRT_SECURE_NO_WARNINGS
 
- // •¶šƒZƒbƒg‚ğƒ}ƒ‹ƒ`ƒoƒCƒg‚ÉŒÀ’è‚³‚¹‚é
+ // æ–‡å­—ã‚»ãƒƒãƒˆã‚’ãƒãƒ«ãƒãƒã‚¤ãƒˆã«é™å®šã•ã›ã‚‹
 #ifndef _MBCS
-#error ƒ}ƒ‹ƒ`ƒoƒCƒg•¶šƒZƒbƒg‚ğg—p‚µ‚Ä‚­‚¾‚³‚¢B
+#error ãƒãƒ«ãƒãƒã‚¤ãƒˆæ–‡å­—ã‚»ãƒƒãƒˆã‚’ä½¿ç”¨ã—ã¦ãã ã•ã„ã€‚
 #endif
 
 /************************************************
-    ƒCƒ“ƒNƒ‹[ƒh
+    ã‚¤ãƒ³ã‚¯ãƒ«ãƒ¼ãƒ‰
 ************************************************/
 #include <Windows.h>
 #include <Xinput.h>
@@ -30,7 +30,7 @@
 #pragma comment (lib, "Xinput.lib")
 
 /************************************************
-    ƒ}ƒNƒEŒ^E’è”
+    ãƒã‚¯ãƒ­ãƒ»å‹ãƒ»å®šæ•°
 ************************************************/
 typedef char                int8;
 typedef short               int16;
@@ -60,10 +60,10 @@ constexpr uint32 uintMAX = 0xFFFFFFFF;
 #define PI            3.1415926F
 
 /************************************************
-    —ñ‹“Œ^
+    åˆ—æŒ™å‹
 ************************************************/
 
-// •¶šF
+// æ–‡å­—è‰²
 enum Color
 {
     FONT_BLACK     = 0x0000,
@@ -101,7 +101,7 @@ enum Color
     BACK_WHITE     = 0x00F0,
 };
 
-// ƒL[ƒ{[ƒh
+// ã‚­ãƒ¼ãƒœãƒ¼ãƒ‰
 enum Key
 {
     RETURN = 0x0D,
@@ -139,7 +139,7 @@ enum Key
     DOWN   = 0x28,
 };
 
-// ƒL[“ü—Í
+// ã‚­ãƒ¼å…¥åŠ›
 enum InputState
 {
     Pressed,
@@ -147,7 +147,7 @@ enum InputState
     Release,
 };
 
-// ƒ}ƒEƒXƒ{ƒ^ƒ“
+// ãƒã‚¦ã‚¹ãƒœã‚¿ãƒ³
 enum MouseButton
 {
     L_Button,
@@ -228,10 +228,10 @@ enum SOUND_EFFECT_INSTANCE_FLAGS : uint32
 
 
 /************************************************
-    \‘¢‘Ì
+    æ§‹é€ ä½“
 ************************************************/
 
-// 2ŸŒ³ƒxƒNƒgƒ‹
+// 2æ¬¡å…ƒãƒ™ã‚¯ãƒˆãƒ«
 struct Vector2
 {
     float X;
@@ -293,7 +293,7 @@ struct Vector2
     }
 };
 
-// ƒoƒEƒ“ƒfƒBƒ“ƒOƒ{ƒbƒNƒX
+// ãƒã‚¦ãƒ³ãƒ‡ã‚£ãƒ³ã‚°ãƒœãƒƒã‚¯ã‚¹
 struct AABB
 {
     AABB()
@@ -312,7 +312,7 @@ struct AABB
     Vector2 Max;
 };
 
-// ƒsƒNƒZƒ‹
+// ãƒ”ã‚¯ã‚»ãƒ«
 struct Pixel
 {
     Pixel()
@@ -344,7 +344,7 @@ namespace conioex2
 {
     struct Engine
     {
-        // ƒRƒ“ƒ\[ƒ‹
+        // ã‚³ãƒ³ã‚½ãƒ¼ãƒ«
         struct Console
         {
             HANDLE                       hInput;
@@ -359,7 +359,7 @@ namespace conioex2
         };
         Console console;
 
-        // ƒrƒbƒgƒ}ƒbƒv‰æ‘œ
+        // ãƒ“ãƒƒãƒˆãƒãƒƒãƒ—ç”»åƒ
         struct Image
         {
             unsigned char* Sprite;
@@ -368,7 +368,7 @@ namespace conioex2
         };
         Image Sprite;
 
-        // ƒL[ƒ{[ƒh
+        // ã‚­ãƒ¼ãƒœãƒ¼ãƒ‰
         struct Keyboard_
         {
             KeyState Keys[256];
@@ -381,7 +381,7 @@ namespace conioex2
         };
         Keyboard_ Keyboard;
 
-        // ƒ}ƒEƒX
+        // ãƒã‚¦ã‚¹
         struct Mouse_
         {
             KeyState     Button[5];
@@ -394,7 +394,7 @@ namespace conioex2
         };
         Mouse_ Mouse;
 
-        // ŠÔ
+        // æ™‚é–“
         struct Time_
         {
             LARGE_INTEGER frequency;
@@ -404,7 +404,7 @@ namespace conioex2
         };
         Time_ Time;
 
-        // ƒRƒ“ƒgƒ[ƒ‰[
+        // ã‚³ãƒ³ãƒˆãƒ­ãƒ¼ãƒ©ãƒ¼
         struct XBox_
         {
             XBoxInputState buttons[14];
@@ -418,7 +418,7 @@ namespace conioex2
     };
 
 
-    //:::::::::::::::::::: ƒRƒ“ƒ\[ƒ‹ :::::::::::::::::::://
+    //:::::::::::::::::::: ã‚³ãƒ³ã‚½ãƒ¼ãƒ« :::::::::::::::::::://
 
     void InitializeConsole(int width, int height, const char* titleName, int fontwidth, int fontheight, const WCHAR* fontname = L"");
     void FinalizeConsole();
@@ -451,20 +451,20 @@ namespace conioex2
     bool IsFocusInConsole();
     bool IsInViewport(Vector2 location);
 
-    //:::::::::::::::::::: ƒL[ƒ{[ƒh :::::::::::::::::::://
+    //:::::::::::::::::::: ã‚­ãƒ¼ãƒœãƒ¼ãƒ‰ :::::::::::::::::::://
 
     void UpdateKeyInput();
     void UpdateAsyncKeyInput();
     bool GetInputKey(Key key, InputState state);
 
-    //:::::::::::::::::::: ƒ}ƒEƒX :::::::::::::::::::://
+    //:::::::::::::::::::: ãƒã‚¦ã‚¹ :::::::::::::::::::://
 
     void UpdateMouseInput();
     bool GetInputMouseInput(MouseButton button, InputState state);
     int GetMouseX();
     int GetMouseY();
 
-    //:::::::::::::::::::: ƒRƒ“ƒgƒ[ƒ‰[ :::::::::::::::::::://
+    //:::::::::::::::::::: ã‚³ãƒ³ãƒˆãƒ­ãƒ¼ãƒ©ãƒ¼ :::::::::::::::::::://
 
     void UpdateXBoxInput();
     bool GetInputXBoxButton(Button button, XBoxInputState state);
@@ -474,21 +474,21 @@ namespace conioex2
     void PlayVibrate();
     void StopVibrate();
 
-    //:::::::::::::::::::: ƒrƒbƒgƒ}ƒbƒv :::::::::::::::::::://
+    //:::::::::::::::::::: ãƒ“ãƒƒãƒˆãƒãƒƒãƒ— :::::::::::::::::::://
 
     Engine::Image* CreateImage(const char* filename);
     void ShowImage(Engine::Image* sprite, int lx, int ly);
     bool ReleaseImage(Engine::Image* object);
-    void CreateColorTableFromImage(Engine::Image* sprite);	// BMP‚©‚ç16F‚ÌƒJƒ‰[ƒe[ƒuƒ‹‚ğ¶¬‚·‚é
+    void CreateColorTableFromImage(Engine::Image* sprite);	// BMPã‹ã‚‰16è‰²ã®ã‚«ãƒ©ãƒ¼ãƒ†ãƒ¼ãƒ–ãƒ«ã‚’ç”Ÿæˆã™ã‚‹
 
-    //:::::::::::::::::::: ŠÔ :::::::::::::::::::://
+    //:::::::::::::::::::: æ™‚é–“ :::::::::::::::::::://
 
     void InitTime();
     void UpdateTime();
     void Wait(unsigned long milliseconds);
     double GetDeltaTime();
 
-    //:::::::::::::::::::: ”Ä—p :::::::::::::::::::://
+    //:::::::::::::::::::: æ±ç”¨ :::::::::::::::::::://
 
     uint64 RangeRand(uint64 min, uint64 max);
     bool IsHit(AABB self, AABB other);

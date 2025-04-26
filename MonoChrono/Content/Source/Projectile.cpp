@@ -11,7 +11,7 @@ Projectile::Projectile(int index, Enemy* owner, Vector2 speed, Vector2 location,
     , Type(type)
     , Owner(owner)
 {
-    // e‚Ì’e‰æ‘œ‚ğQÆ
+    // è¦ªã®å¼¾ç”»åƒã‚’å‚ç…§
     switch (type)
     {
         case Normal:
@@ -94,7 +94,7 @@ void Projectile::Tick(float DeltaTime, float dilation)
         break;
     }
 
-    // ƒvƒŒƒCƒ„[‚Æ‚ÌŒğ·”»’è‚ğ‚Æ‚é
+    // ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã¨ã®äº¤å·®åˆ¤å®šã‚’ã¨ã‚‹
     if (conioex2::IsHit(Collision, Game::GetGameInstance()->m_Player->CapsuleCollision))
     {
         Game::GetGameInstance()->m_Player->NotifyHit(this);
@@ -102,7 +102,7 @@ void Projectile::Tick(float DeltaTime, float dilation)
 
     if (bCanMove) Move(DeltaTime * dilation);
 
-    // ƒ{ƒbƒNƒXƒRƒŠƒWƒ‡ƒ“‚ÌÀ•WXV
+    // ãƒœãƒƒã‚¯ã‚¹ã‚³ãƒªã‚¸ãƒ§ãƒ³ã®åº§æ¨™æ›´æ–°
     Collision.Min.X = Location.X;
     Collision.Min.Y = Location.Y;
     Collision.Max.X = Location.X + Size.X;

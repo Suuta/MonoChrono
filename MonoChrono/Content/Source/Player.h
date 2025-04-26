@@ -25,26 +25,26 @@ struct Player {
     Player();
     ~Player();
 
-    // ƒpƒ‰ƒ[ƒ^[
+    // ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿ãƒ¼
     Vector2 Location;
     Vector2 Size;
     Vector2 KnockBack;
-    AABB    AttackCollision;  // UŒ‚”»’è
-    AABB    CapsuleCollision; // ƒLƒƒƒ‰ƒNƒ^[‚Ì”»’è
+    AABB    AttackCollision;  // æ”»æ’ƒåˆ¤å®š
+    AABB    CapsuleCollision; // ã‚­ãƒ£ãƒ©ã‚¯ã‚¿ãƒ¼ã®åˆ¤å®š
 
-    // ƒXƒe[ƒ^ƒX
+    // ã‚¹ãƒ†ãƒ¼ã‚¿ã‚¹
     float Speed;
     float HP;
     float JumpSpeed;
     float GravityScale;
     int   JumpCount;
 
-    // ƒAƒNƒVƒ‡ƒ“‚ª‰Â”\‚©‚Ç‚¤‚©
+    // ã‚¢ã‚¯ã‚·ãƒ§ãƒ³ãŒå¯èƒ½ã‹ã©ã†ã‹
     bool bCanJump;
     bool bCanAttack;
     bool bCanMove;
 
-    // ƒvƒŒƒCƒ„[‚Ìs“®ó‘Ô
+    // ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã®è¡Œå‹•çŠ¶æ…‹
     bool bIsAttacking;
     bool bIsWalking;
     bool bIsJumping;
@@ -53,29 +53,29 @@ struct Player {
     bool bMoveRight;
     bool bOnFloor;
 
-    // ƒ_ƒ[ƒWŒn
+    // ãƒ€ãƒ¡ãƒ¼ã‚¸ç³»
     bool bRecieveDamage;
     bool bHitProjectile;
     bool bKnockback;
     bool bIsVibrating;
     bool bIsInvincible;
 
-    // ƒEƒBƒbƒ`ƒ^ƒCƒ€
+    // ã‚¦ã‚£ãƒƒãƒã‚¿ã‚¤ãƒ 
     bool bIsWitchTime;
     bool bIsWitchtimeCoolTime;
 
-    // ƒAƒjƒ[ƒVƒ‡ƒ“ƒpƒ‰ƒ[ƒ^[
+    // ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿ãƒ¼
     float WalkAnimationTransitionTime;
     float AirAnimationTransitionTime;
     float AttackAnimationTransitionTime;
 
-    // ƒTƒEƒ“ƒhƒnƒ“ƒhƒ‹
+    // ã‚µã‚¦ãƒ³ãƒ‰ãƒãƒ³ãƒ‰ãƒ«
     SoundHandle SE_Damage;
     SoundHandle SE_Attack;
 
     void Init();
 
-    // XVŠÖ”
+    // æ›´æ–°é–¢æ•°
     void Tick(float DeltaTime, float dilation);
     void UpdatePhysics(float DeltaTime);
     void UpdateAnimimation(float DeltaTime);
@@ -84,51 +84,51 @@ struct Player {
     void Draw();
     void HUD();
 
-    // ƒXƒe[ƒ^ƒXŠÖ”
+    // ã‚¹ãƒ†ãƒ¼ã‚¿ã‚¹é–¢æ•°
     void Damage(float amount);
     void NotifyHit(Projectile* projectile);
     void Dead();
 
-    // ƒAƒNƒVƒ‡ƒ“ŠÖ”
+    // ã‚¢ã‚¯ã‚·ãƒ§ãƒ³é–¢æ•°
     void MoveRight(float DeltaTime);
     void MoveLeft(float DeltaTime);
     void MoveUp(float DeltaTime);
 
-    void Move(float DeltaTime, Vector2 value);	// ƒRƒ“ƒgƒ[ƒ‰[ˆÚ“®
+    void Move(float DeltaTime, Vector2 value);	// ã‚³ãƒ³ãƒˆãƒ­ãƒ¼ãƒ©ãƒ¼ç§»å‹•
 
     void Jump();
     void Attack();
 
 
-    // ƒAƒjƒ[ƒVƒ‡ƒ“‘JˆÚŠÇ—
+    // ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³é·ç§»ç®¡ç†
     void AnimSequence(EPlayerAnimation animation, float transitionTime, int index, float DeltaTime);
 
-    // Œ»İ‚ÌƒAƒjƒ[ƒVƒ‡ƒ“
+    // ç¾åœ¨ã®ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³
     EPlayerAnimation CurrentAnimation;
 
-    // Œ»İ‚ÌƒAƒjƒ[ƒVƒ‡ƒ“ƒCƒ“ƒfƒbƒNƒX
+    // ç¾åœ¨ã®ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹
     int AnimationIndex;
     int AttackAnimIndex;
 
-    // ƒAƒCƒhƒ‹ƒAƒjƒ[ƒVƒ‡ƒ“
+    // ã‚¢ã‚¤ãƒ‰ãƒ«ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³
     conioex2::Engine::Image* R_IdleAnimation;
     conioex2::Engine::Image* L_IdleAnimation;
-    // ‹ó’†ƒAƒjƒ[ƒVƒ‡ƒ“
+    // ç©ºä¸­ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³
     conioex2::Engine::Image* R_AirAnimation[2];
     conioex2::Engine::Image* L_AirAnimation[2];
 
-    // ƒ_ƒbƒVƒ…ƒAƒjƒ[ƒVƒ‡ƒ“
+    // ãƒ€ãƒƒã‚·ãƒ¥ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³
     conioex2::Engine::Image* R_DashAnimation;
     conioex2::Engine::Image* L_DashAnimation;
-    // ˆÚ“®ƒAƒjƒ[ƒVƒ‡ƒ“
+    // ç§»å‹•ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³
     conioex2::Engine::Image* R_WalkAnimation[7];
     conioex2::Engine::Image* L_WalkAnimation[7];
 
-    // UŒ‚ƒAƒjƒ[ƒVƒ‡ƒ“
+    // æ”»æ’ƒã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³
     conioex2::Engine::Image* R_AttackAnimation[3];
     conioex2::Engine::Image* L_AttackAnimation[3];
 
-    // UŒ‚ƒgƒŒƒCƒ‹
+    // æ”»æ’ƒãƒˆãƒ¬ã‚¤ãƒ«
     conioex2::Engine::Image* L_attackTrail;
     conioex2::Engine::Image* R_attackTrail;
 };

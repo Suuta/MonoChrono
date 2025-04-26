@@ -253,18 +253,18 @@ namespace conioex2
 
     void InitializeConsole(int width, int height, const char* titleName, int fontWidth, int fontHeight, const WCHAR* fontname)
     {
-        LOG("■conioex2::InitializeConsole().\n");
+        LOG("conioex2::InitializeConsole().\n");
 
         if (bIsInit)
         {
-            LOG("・すでに初期化されています.\n");
+            LOG("すでに初期化されています.\n");
             return;
         }
 
 
         GEngine = new Engine;
 
-        LOG("・new GEngine.\n");
+        LOG("new GEngine.\n");
 
         GEngine->console.hInput  = GetStdHandle(STD_INPUT_HANDLE);
         GEngine->console.hOutput = GetStdHandle(STD_OUTPUT_HANDLE);
@@ -347,31 +347,31 @@ namespace conioex2
         if (GEngine->console.ScreenBuffer == nullptr)
         {
             GEngine->console.ScreenBuffer = new CHAR_INFO[GEngine->console.WindowSize.X * GEngine->console.WindowSize.Y];
-            ::LOG("・new GEngine->console.ScreenBuffer.\n");
+            ::LOG("new GEngine->console.ScreenBuffer.\n");
             ZeroMemory(GEngine->console.ScreenBuffer, sizeof(CHAR_INFO) * (GEngine->console.WindowSize.X * GEngine->console.WindowSize.Y));
         }
         else
         {
             delete GEngine->console.ScreenBuffer;
             GEngine->console.ScreenBuffer = nullptr;
-            ::LOG("・delete GEngine->console.ScreenBuffer.\n");
+            ::LOG("delete GEngine->console.ScreenBuffer.\n");
 
             GEngine->console.ScreenBuffer = new CHAR_INFO[GEngine->console.WindowSize.X * GEngine->console.WindowSize.Y];
-            ::LOG("・new GEngine->console.ScreenBuffer.\n");
+            ::LOG("new GEngine->console.ScreenBuffer.\n");
             ZeroMemory(GEngine->console.ScreenBuffer, sizeof(CHAR_INFO) * (GEngine->console.WindowSize.X * GEngine->console.WindowSize.Y));
         }
 #endif
 
         // バッファーサイズのメモリ確保
         GEngine->console.ScreenBuffer = new CHAR_INFO[GEngine->console.WindowSize.X * GEngine->console.WindowSize.Y];
-        LOG("・new GEngine->console.ScreenBuffer.\n");
+        LOG("new GEngine->console.ScreenBuffer.\n");
         ZeroMemory(GEngine->console.ScreenBuffer, sizeof(CHAR_INFO) * (GEngine->console.WindowSize.X * GEngine->console.WindowSize.Y));
 
 
         // ウィンドウのシステムメニューを非表示
         // 終了処理を実行させるために、ユーザーが×ボタンで終了させないようにする
-        //HWND consoleWindow = GetConsoleWindow();
-        //SetWindowLongPtr(consoleWindow, GWL_STYLE, GetWindowLong(consoleWindow, GWL_STYLE) & ~WS_SYSMENU);
+        HWND consoleWindow = GetConsoleWindow();
+        SetWindowLongPtr(consoleWindow, GWL_STYLE, GetWindowLong(consoleWindow, GWL_STYLE) & ~WS_MAXIMIZEBOX);
 
 
         // コンソール入力形式を設定
@@ -391,24 +391,24 @@ namespace conioex2
 
     void FinalizeConsole()
     {
-        LOG("■conioex2::FinalizeConsole().\n");
+        LOG("conioex2::FinalizeConsole().\n");
         if (bIsInit)
         {
             if (GEngine)
             {
                 AudioManager::Fin();
 
-                LOG("■conioex2::DestroySound().\n");
+                LOG("conioex2::DestroySound().\n");
 
                 if (GEngine->console.ScreenBuffer)
                 {
                     delete GEngine->console.ScreenBuffer;
                     GEngine->console.ScreenBuffer = nullptr;
-                    LOG("・delete GEngine->console.ScreenBuffer.\n");
+                    LOG("delete GEngine->console.ScreenBuffer.\n");
 
                     delete GEngine;
                     GEngine = nullptr;
-                    LOG("・delete GEngine.\n");
+                    LOG("delete GEngine.\n");
                 }
 
                 bIsInit = false;
@@ -416,7 +416,7 @@ namespace conioex2
         }
         else
         {
-            LOG("・すでに終了処理が呼ばれています。\n");
+            LOG("すでに終了処理が呼ばれています。\n");
         }
     }
 

@@ -18,7 +18,7 @@ GameBase::~GameBase()
 
 void GameBase::Initialize()
 {
-    LOG("■GameBase::Initialize().\n");
+    LOG("GameBase::Initialize().\n");
     conioex2::SetCursorVisibility(false);
 }
 
@@ -36,7 +36,6 @@ void GameBase::Update()
 
         // オーディオ更新
         AudioManager::Update();
-
 
         if (conioex2::GetInputKey(Key::ESCAPE, InputState::Pressed))
         {
@@ -77,7 +76,7 @@ void GameBase::Update()
 
 void GameBase::Finalize()
 {
-    LOG("■GameBase::Finalize().\n");
+    LOG("GameBase::Finalize().\n");
     conioex2::SetTitle("MonoChrono");
     conioex2::SetCursorVisibility(true);
 }

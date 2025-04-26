@@ -79,11 +79,11 @@ void Player::Init()
 
 void Player::Tick(float DeltaTime, float dilation)
 {
-    UpdateInput(DeltaTime);       // ì¸óÕÇÃçXêV
-    UpdatePhysics(DeltaTime);     // îªíËÇÃçXêV
-    UpdateState(DeltaTime);       // ÉXÉeÅ[ÉgÇÃçXêV
-    UpdateAnimimation(DeltaTime); // ÉAÉjÉÅÅ[ÉVÉáÉìÇÃçXêV
-    Draw();                       // ï`âÊÇÃçXêV
+    UpdateInput(DeltaTime);       // ÂÖ•Âäõ„ÅÆÊõ¥Êñ∞
+    UpdatePhysics(DeltaTime);     // Âà§ÂÆö„ÅÆÊõ¥Êñ∞
+    UpdateState(DeltaTime);       // „Çπ„ÉÜ„Éº„Éà„ÅÆÊõ¥Êñ∞
+    UpdateAnimimation(DeltaTime); // „Ç¢„Éã„É°„Éº„Ç∑„Éß„É≥„ÅÆÊõ¥Êñ∞
+    Draw();                       // ÊèèÁîª„ÅÆÊõ¥Êñ∞
 }
 
 void Player::MoveUp(float DeltaTime)
@@ -102,7 +102,7 @@ void Player::Move(float DeltaTime, Vector2 value)
     }
 }
 
-// ç≈å„Ç…âï˙Ç∑ÇÈÇ©ÇÁdeleteÇµÇ»Ç¢Ç±Ç∆
+// ÊúÄÂæå„Å´Ëß£Êîæ„Åô„Çã„Åã„Çâdelete„Åó„Å™„ÅÑ„Åì„Å®
 void Player::Dead()
 {
     AudioManager::StopStresm(Game::GetGameInstance()->BGM_Main);
@@ -122,7 +122,7 @@ void Player::Jump()
 
 void Player::Attack()
 {
-    // ìñÇΩÇËîªíËÇ∆çUåÇÉGÉtÉFÉNÉgÇê∂ê¨
+    // ÂΩì„Åü„ÇäÂà§ÂÆö„Å®ÊîªÊíÉ„Ç®„Éï„Çß„ÇØ„Éà„ÇíÁîüÊàê
     if (!bIsAttacking && bCanAttack)
     {
         bIsAttacking = true;
@@ -133,13 +133,13 @@ void Player::Attack()
 
 void Player::UpdatePhysics(float DeltaTime)
 {
-    // É{ÉbÉNÉXÉRÉäÉWÉáÉìÇÃçXêV
+    // „Éú„ÉÉ„ÇØ„Çπ„Ç≥„É™„Ç∏„Éß„É≥„ÅÆÊõ¥Êñ∞
     CapsuleCollision.Min.X = Location.X;
     CapsuleCollision.Min.Y = Location.Y;
     CapsuleCollision.Max.X = Location.X + Size.X;
     CapsuleCollision.Max.Y = Location.Y + Size.Y;
 
-    // çUåÇîªíËÇÃçXêV
+    // ÊîªÊíÉÂà§ÂÆö„ÅÆÊõ¥Êñ∞
     if (bMoveRight)
     {
         AttackCollision.Min.X = Location.X + Size.X;
@@ -172,7 +172,7 @@ void Player::UpdatePhysics(float DeltaTime)
         }
     }
 
-    // çUåÇÇÃÉqÉbÉgîªíËÇìGÇ…í ím
+    // ÊîªÊíÉ„ÅÆ„Éí„ÉÉ„ÉàÂà§ÂÆö„ÇíÊïµ„Å´ÈÄöÁü•
     if (bIsAttacking)
     {
         if (conioex2::IsHit(AttackCollision, Game::GetGameInstance()->m_Enemy->Collision))
@@ -181,7 +181,7 @@ void Player::UpdatePhysics(float DeltaTime)
         }
     }
 
-    // XâÊñ ì‡ã≠êß
+    // XÁîªÈù¢ÂÜÖÂº∑Âà∂
     if (Location.X <= 5.0f)
     {
         Location.X = 5.0f;
@@ -191,12 +191,12 @@ void Player::UpdatePhysics(float DeltaTime)
         Location.X = conioex2::Width() - Size.X - 5.f;
     }
 
-    // YâÊñ ì‡ã≠êß
+    // YÁîªÈù¢ÂÜÖÂº∑Âà∂
     if (Location.Y <= 5.0f)
     {
         Location.Y = 5.0f;
     }
-    // ã[éóèdóÕÇìKâû
+    // Êì¨‰ººÈáçÂäõ„ÇíÈÅ©Âøú
     if (Location.Y <= conioex2::Height() - Size.Y - 5.0f)
     {
         if (!bOnFloor && !bIsAttacking)
@@ -227,20 +227,20 @@ void Player::AnimSequence(EPlayerAnimation animation, float transitionTime, int 
 
 void Player::UpdateAnimimation(float DeltaTime)
 {
-    // à⁄ìÆíÜ
+    // ÁßªÂãï‰∏≠
     if (bIsWalking)
     {
-        // âEà⁄ìÆíÜ
+        // Âè≥ÁßªÂãï‰∏≠
         if (bMoveRight)
         {
-            // çUåÇíÜ
+            // ÊîªÊíÉ‰∏≠
             if (bIsAttacking)
             {
                 static float transitionTime = 0.f;
                 transitionTime += 1.f * DeltaTime;
                 CurrentAnimation = EPlayerAnimation::R_Attack;
 
-                // 0.1ïbåoâﬂÇµÇΩÇÁéüÇÃÉAÉjÉÅÅ[ÉVÉáÉìÉtÉåÅ[ÉÄÇ÷
+                // 0.1ÁßíÁµåÈÅé„Åó„Åü„ÇâÊ¨°„ÅÆ„Ç¢„Éã„É°„Éº„Ç∑„Éß„É≥„Éï„É¨„Éº„É†„Å∏
                 if (transitionTime >= AttackAnimationTransitionTime)
                 {
                     AttackAnimIndex < 2 ? AttackAnimIndex++ : AttackAnimIndex = 0;
@@ -249,14 +249,14 @@ void Player::UpdateAnimimation(float DeltaTime)
             }
             else
             {
-                // É_ÉbÉVÉÖ
+                // „ÉÄ„ÉÉ„Ç∑„É•
                 if (bIsDash)
                 {
                     CurrentAnimation = EPlayerAnimation::R_Dash;
                 }
                 else
                 {
-                    // ãÛíÜÇ©Ç«Ç§Ç©
+                    // Á©∫‰∏≠„Åã„Å©„ÅÜ„Åã
                     if (bIsinAir)
                     {
                         AnimSequence(EPlayerAnimation::R_Air, AirAnimationTransitionTime, 1, DeltaTime);
@@ -268,17 +268,17 @@ void Player::UpdateAnimimation(float DeltaTime)
                 }
             }
         }
-        // ç∂à⁄ìÆíÜ
+        // Â∑¶ÁßªÂãï‰∏≠
         else
         {
-            // çUåÇíÜ
+            // ÊîªÊíÉ‰∏≠
             if (bIsAttacking)
             {
                 static float transitionTime = 0.f;
                 transitionTime += 1.f * DeltaTime;
                 CurrentAnimation = EPlayerAnimation::L_Attack;
 
-                // 0.1ïbåoâﬂÇµÇΩÇÁéüÇÃÉAÉjÉÅÅ[ÉVÉáÉìÉtÉåÅ[ÉÄÇ÷
+                // 0.1ÁßíÁµåÈÅé„Åó„Åü„ÇâÊ¨°„ÅÆ„Ç¢„Éã„É°„Éº„Ç∑„Éß„É≥„Éï„É¨„Éº„É†„Å∏
                 if (transitionTime >= AttackAnimationTransitionTime)
                 {
                     AttackAnimIndex < 2 ? AttackAnimIndex++ : AttackAnimIndex = 0;
@@ -287,14 +287,14 @@ void Player::UpdateAnimimation(float DeltaTime)
             }
             else
             {
-                // É_ÉbÉVÉÖ
+                // „ÉÄ„ÉÉ„Ç∑„É•
                 if (bIsDash)
                 {
                     CurrentAnimation = EPlayerAnimation::L_Dash;
                 }
                 else
                 {
-                    // ãÛíÜÇ©Ç«Ç§Ç©
+                    // Á©∫‰∏≠„Åã„Å©„ÅÜ„Åã
                     if (bIsinAir)
                     {
                         AnimSequence(EPlayerAnimation::L_Air, AirAnimationTransitionTime, 1, DeltaTime);
@@ -307,19 +307,19 @@ void Player::UpdateAnimimation(float DeltaTime)
             }
         }
     }
-    // ÉjÉÖÅ[ÉgÉâÉã
+    // „Éã„É•„Éº„Éà„É©„É´
     else
     {
         if (bMoveRight)
         {
-            // çUåÇíÜ
+            // ÊîªÊíÉ‰∏≠
             if (bIsAttacking)
             {
                 static float transitionTime = 0.f;
                 transitionTime += 1.f * DeltaTime;
                 CurrentAnimation = EPlayerAnimation::R_Attack;
 
-                // 0.1ïbåoâﬂÇµÇΩÇÁéüÇÃÉAÉjÉÅÅ[ÉVÉáÉìÉtÉåÅ[ÉÄÇ÷
+                // 0.1ÁßíÁµåÈÅé„Åó„Åü„ÇâÊ¨°„ÅÆ„Ç¢„Éã„É°„Éº„Ç∑„Éß„É≥„Éï„É¨„Éº„É†„Å∏
                 if (transitionTime >= AttackAnimationTransitionTime)
                 {
                     AttackAnimIndex < 2 ? AttackAnimIndex++ : AttackAnimIndex = 0;
@@ -340,14 +340,14 @@ void Player::UpdateAnimimation(float DeltaTime)
         }
         else
         {
-            // çUåÇíÜ
+            // ÊîªÊíÉ‰∏≠
             if (bIsAttacking)
             {
                 static float transitionTime = 0.f;
                 transitionTime += 1.f * DeltaTime;
                 CurrentAnimation = EPlayerAnimation::L_Attack;
 
-                // 0.1ïbåoâﬂÇµÇΩÇÁéüÇÃÉAÉjÉÅÅ[ÉVÉáÉìÉtÉåÅ[ÉÄÇ÷
+                // 0.1ÁßíÁµåÈÅé„Åó„Åü„ÇâÊ¨°„ÅÆ„Ç¢„Éã„É°„Éº„Ç∑„Éß„É≥„Éï„É¨„Éº„É†„Å∏
                 if (transitionTime >= AttackAnimationTransitionTime)
                 {
                     AttackAnimIndex < 2 ? AttackAnimIndex++ : AttackAnimIndex = 0;
@@ -405,13 +405,13 @@ void Player::UpdateState(float DeltaTime)
     static float knockbackTime = 0.f;
     static float witchtimeCoolTime = 0.f;
 
-    // éÄñSîªíË
+    // Ê≠ª‰∫°Âà§ÂÆö
     if (HP <= 0.f)
     {
         Dead();
     }
 
-    // ÉWÉÉÉìÉv
+    // „Ç∏„É£„É≥„Éó
     if (bIsJumping)
     {
         jumpTime += 1.0f * DeltaTime;
@@ -423,7 +423,7 @@ void Player::UpdateState(float DeltaTime)
         jumpTime = 0.0f;
     }
 
-    // É_ÉbÉVÉÖ
+    // „ÉÄ„ÉÉ„Ç∑„É•
     if (bIsDash)
     {
         bIsInvincible = true;
@@ -433,7 +433,7 @@ void Player::UpdateState(float DeltaTime)
 
         dashTime += 1.0f * DeltaTime;
 
-        // É_ÉbÉVÉÖíÜÇ…íeÇêHÇÁÇ¡ÇƒÇ¢ÇΩÇÁÉEÉBÉbÉ`É^ÉCÉÄÇ…à⁄çs
+        // „ÉÄ„ÉÉ„Ç∑„É•‰∏≠„Å´Âºæ„ÇíÈ£ü„Çâ„Å£„Å¶„ÅÑ„Åü„Çâ„Ç¶„Ç£„ÉÉ„ÉÅ„Çø„Ç§„É†„Å´ÁßªË°å
         if (bHitProjectile && !bIsWitchTime && !bIsWitchtimeCoolTime)
         {
             bIsWitchTime = true;
@@ -453,7 +453,7 @@ void Player::UpdateState(float DeltaTime)
         dashTime = 0.0f;
     }
 
-    // É_ÉÅÅ[ÉWå„ñ≥ìGéûä‘
+    // „ÉÄ„É°„Éº„Ç∏ÂæåÁÑ°ÊïµÊôÇÈñì
     if (!bRecieveDamage)
     {
         invincibleTime += 1.0f * DeltaTime;
@@ -464,7 +464,7 @@ void Player::UpdateState(float DeltaTime)
         bRecieveDamage = true;
     }
 
-    // ÉmÉbÉNÉoÉbÉNíÜ
+    // „Éé„ÉÉ„ÇØ„Éê„ÉÉ„ÇØ‰∏≠
     if (bKnockback)
     {
         bCanAttack = false;
@@ -493,7 +493,7 @@ void Player::UpdateState(float DeltaTime)
     }
 
 
-    // É_ÉÅÅ[ÉWéûÇÃÉoÉCÉuéûä‘
+    // „ÉÄ„É°„Éº„Ç∏ÊôÇ„ÅÆ„Éê„Ç§„ÉñÊôÇÈñì
     if (bIsVibrating)
     {
         vibrateTime += 1.0f * DeltaTime;
@@ -505,10 +505,10 @@ void Player::UpdateState(float DeltaTime)
         conioex2::StopVibrate();
     }
 
-    // ÉEÉBÉbÉ`É^ÉCÉÄéûä‘
+    // „Ç¶„Ç£„ÉÉ„ÉÅ„Çø„Ç§„É†ÊôÇÈñì
     if (bIsWitchTime)
     {
-        bHitProjectile = false; // çƒìxîªíËÇ≥ÇÍÇΩéûëŒâû
+        bHitProjectile = false; // ÂÜçÂ∫¶Âà§ÂÆö„Åï„Çå„ÅüÊôÇÂØæÂøú
         bCanAttack = true;
         bRecieveDamage = false;
 
@@ -528,7 +528,7 @@ void Player::UpdateState(float DeltaTime)
         witchTime = 0.0f;
     }
 
-    // ÉEÉBÉbÉ`É^ÉCÉÄÇÃÉNÅ[ÉãÉ^ÉCÉÄ
+    // „Ç¶„Ç£„ÉÉ„ÉÅ„Çø„Ç§„É†„ÅÆ„ÇØ„Éº„É´„Çø„Ç§„É†
     if (bIsWitchtimeCoolTime)
     {
         witchtimeCoolTime += 1.f * DeltaTime;
@@ -539,7 +539,7 @@ void Player::UpdateState(float DeltaTime)
         witchtimeCoolTime = 0.f;
     }
 
-    // çUåÇ
+    // ÊîªÊíÉ
     if (bIsAttacking)
     {
         attackTime += 1.0f * DeltaTime;
@@ -563,29 +563,53 @@ void Player::UpdateState(float DeltaTime)
 
 void Player::UpdateInput(float DeltaTime)
 {
-    // LÉXÉeÉBÉbÉNì¸óÕ
+    // L„Çπ„ÉÜ„Ç£„ÉÉ„ÇØÂÖ•Âäõ
     Vector2 L = conioex2::GetInputXBoxAxis(Stick::Stick_L);
 
-    // ÉfÉbÉhÉ]Å[ÉìÇ∆ÇµÇƒê‚ëŒíl0.15à»â∫Ç0Ç… Clamp() Ç∑ÇÈ
+    // „Éá„ÉÉ„Éâ„Çæ„Éº„É≥„Å®„Åó„Å¶Áµ∂ÂØæÂÄ§0.15‰ª•‰∏ã„Çí0„Å´ Clamp() „Åô„Çã
     if (abs(L.X) <= 0.15f) L.X = 0.0f;
     if (abs(L.Y) <= 0.15f) L.Y = 0.0f;
 
-    // ÉNÉâÉìÉvå„Ç…ì¸óÕîªíËÇ™Ç†ÇÈÇ»ÇÁ
-    if (L.X != 0.f)
+    if (conioex2::GetInputKey(Key::A, InputState::Hold)) L.X = -1.0f;
+    if (conioex2::GetInputKey(Key::D, InputState::Hold)) L.X =  1.0f;
+
+
+    // „ÇØ„É©„É≥„ÉóÂæå„Å´ÂÖ•ÂäõÂà§ÂÆö„Åå„ÅÇ„Çã„Å™„Çâ
+    if (L.X != 0.0f)
     {
         Move(DeltaTime, L);
         bIsWalking = true;
 
-        L.X > 0 ? bMoveRight = true : bMoveRight = false;
+        L.X > 0.0f ? bMoveRight = true : bMoveRight = false;
     }
     else
     {
         bIsWalking = false;
     }
 
-    if (conioex2::GetInputXBoxButton(Button::XBox_Button_A, XBoxInputState::XBox_Down))	            Jump();
-    if (conioex2::GetInputXBoxButton(Button::XBox_Button_R_Shoulder, XBoxInputState::XBox_Down))    Attack();
-    if (conioex2::GetInputXBoxButton(Button::XBox_Button_L_Shoulder, XBoxInputState::XBox_Down))    if (!bKnockback) bIsDash = true;
+    // „Ç∏„É£„É≥„Éó
+    if (conioex2::GetInputXBoxButton(Button::XBox_Button_A, XBoxInputState::XBox_Down) ||
+        conioex2::GetInputKey(Key::SPACE, InputState::Pressed))
+    {
+        Jump();
+    }
+
+    // ÊîªÊíÉ
+    if (conioex2::GetInputXBoxButton(Button::XBox_Button_R_Shoulder, XBoxInputState::XBox_Down) ||
+        conioex2::GetInputKey(Key::K, InputState::Pressed))
+    {
+        Attack();
+    }
+
+    // „ÉÄ„ÉÉ„Ç∑„É•
+    if (conioex2::GetInputXBoxButton(Button::XBox_Button_L_Shoulder, XBoxInputState::XBox_Down) || 
+        conioex2::GetInputKey(Key::L, InputState::Pressed))
+    {
+        if (!bKnockback)
+        {
+            bIsDash = true;
+        }
+    }
 }
 
 void Player::Draw()
