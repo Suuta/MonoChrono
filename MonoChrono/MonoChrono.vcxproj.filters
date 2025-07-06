@@ -18,6 +18,7 @@
     <ClInclude Include="Content\Source\Player.h" />
     <ClInclude Include="Content\Source\Projectile.h" />
     <ClInclude Include="Content\Source\Audio.h" />
+    <ClInclude Include="resource.h" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Content\Asset\enemy.bmp" />
@@ -76,5 +77,8 @@
   </ItemGroup>
   <ItemGroup>
     <Media Include="Content\Asset\test.wav" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="MonoChrono.rc" />
   </ItemGroup>
 </Project>

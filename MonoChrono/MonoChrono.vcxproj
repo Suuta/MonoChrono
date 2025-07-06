@@ -100,6 +100,7 @@
     <ClInclude Include="Content\Source\GameBase.h" />
     <ClInclude Include="Content\Source\Player.h" />
     <ClInclude Include="Content\Source\Projectile.h" />
+    <ClInclude Include="resource.h" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Content\Asset\air_01.bmp" />
@@ -158,6 +159,9 @@
   </ItemGroup>
   <ItemGroup>
     <Media Include="Content\Asset\test.wav" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="MonoChrono.rc" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
